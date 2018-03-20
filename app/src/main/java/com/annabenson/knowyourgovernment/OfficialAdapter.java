@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Anna on 3/19/2018.
  */
 
-public class OfficialAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class OfficialAdapter extends RecyclerView.Adapter<OfficialViewHolder> {
 
     public static final String TAG = "OfficialAdapter";
     private List<Official> officialList;
