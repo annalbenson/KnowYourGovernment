@@ -24,10 +24,11 @@ public class OfficialAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     @Override
-    public OfficialAdapter onCreateViewHolder(final ViewGroup parent, int viewType){
+    public OfficialViewHolder onCreateViewHolder(final ViewGroup parent, int viewType){
         Log.d(TAG, "onCreateViewHolder: Making New");
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.official_list_row, parent, false);
+
         itemView.setOnClickListener(mainActivity);
         itemView.setOnLongClickListener(mainActivity);
 
@@ -36,9 +37,12 @@ public class OfficialAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     @Override
-    public void onBindOfficialHolder(OfficialViewHolder holder, int position){
+    public void onBindViewHolder(OfficialViewHolder holder, int position){
         Official official = officialList.get(position);
-        official.name.setText(official.getName());
+        holder.name.setText(official.getName());
 
     }
+
+    @Override
+    public int getItemCount(){ return officialList.size();}
 }

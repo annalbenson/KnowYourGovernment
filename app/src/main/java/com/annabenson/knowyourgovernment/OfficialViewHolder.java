@@ -12,7 +12,7 @@ public class OfficialViewHolder extends RecyclerView.ViewHolder {
 
     public TextView name;
 
-    public OfficalViewHolder(View view){
+    public OfficialViewHolder(View view){
         super(view);
         name = view.findViewById(R.id.nameID);
     }

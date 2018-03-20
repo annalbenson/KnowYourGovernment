@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/KnowYourGovernment.iml" filepath="$PROJECT_DIR$/KnowYourGovernment.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/KnowYourGovernment.iml" filepath="$PROJECT_DIR$/.idea/KnowYourGovernment.iml" />
+      <module fileurl="file://C:\Users\Anna\AndroidStudioProjects\KnowYourGovernment\KnowYourGovernment.iml" filepath="C:\Users\Anna\AndroidStudioProjects\KnowYourGovernment\KnowYourGovernment.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
