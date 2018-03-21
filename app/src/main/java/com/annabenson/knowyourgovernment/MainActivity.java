@@ -1,6 +1,7 @@
 package com.annabenson.knowyourgovernment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,6 +77,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.location:
                 searchDialog();
                 return true;
+            case R.id.about:
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }
