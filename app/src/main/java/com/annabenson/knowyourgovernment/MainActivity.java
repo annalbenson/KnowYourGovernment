@@ -1,7 +1,11 @@
 package com.annabenson.knowyourgovernment;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +21,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
 
@@ -31,6 +37,9 @@ public class MainActivity extends AppCompatActivity
     private List<Official> officalList = new ArrayList<>();
     private OfficialAdapter officialAdapter;
 
+    private TextView locationText;
+    private Locator locator;
+
     // initial comment 3/19
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,11 @@ public class MainActivity extends AppCompatActivity
         officialAdapter = new OfficialAdapter(officalList, this);
         recyclerView.setAdapter(officialAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        locationText = findViewById(R.id.locationDisplay);
+        locator = new Locator(this);
+        //locationText.setText("OK");
+
 
 
         for( int i = 0; i < 5; i++){
@@ -54,6 +68,110 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        locator.shutdown();
+        super.onDestroy();
+    }
+
+
+    /* END OF ON METHODS */
+    /* START OF LOCATION METHODS */
+
+
+    public void setData(double lat, double lon){
+        // gets the results of Locator
+
+        String address = doAddress(lat,lon);
+        locationText.setText(address);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Log.d(TAG, "onRequestPermissionsResult: CALL: " + permissions.length);
+        Log.d(TAG, "onRequestPermissionsResult: PERM RESULT RECEIVED");
+
+        if (requestCode == 5) {
+            Log.d(TAG, "onRequestPermissionsResult: permissions.length: " + permissions.length);
+            for (int i = 0; i < permissions.length; i++) {
+                if (permissions[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        Log.d(TAG, "onRequestPermissionsResult: HAS PERM");
+                        locator.setUpLocationManager();
+                        locator.determineLocation();
+                    } else {
+                        Toast.makeText(this, "Location permission was denied - cannot determine address", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "onRequestPermissionsResult: NO PERM");
+                    }
+                }
+            }
+        }
+        Log.d(TAG, "onRequestPermissionsResult: Exiting onRequestPermissionsResult");
+    }
+
+    private String doAddress(double latitude, double longitude) {
+
+        Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
+
+
+
+        List<Address> addresses = null;
+        for (int times = 0; times < 3; times++) {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            try {
+                Log.d(TAG, "doAddress: Getting address now");
+
+
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                Log.d(TAG, "doAddress: Num addresses: " + addresses.size());
+
+                StringBuilder sb = new StringBuilder();
+
+                for (Address ad : addresses) {
+                    Log.d(TAG, "doLocation: " + ad);
+
+                    //sb.append("\nAddress\n\n");
+                    /*
+                    Log.d(TAG, "doAddress: " + ad.getMaxAddressLineIndex());
+                    for (int i = 0; i <= ad.getMaxAddressLineIndex(); i++)
+                        sb.append("\t" + ad.getAddressLine(i) + "\t");
+
+                    */
+                    //sb.append("\t" + ad.getCountryName() + " (" + ad.getCountryCode() + ")\n");
+
+                    String s = ad.getAddressLine(0);
+                    int idx = s.indexOf(',');
+                    s = s.substring(idx + 2, s.length());
+                    //int idx2 = s.length() - s.indexOf(',');
+                    //s = s.substring(0,s.length() - idx2);
+                    sb.append(s);
+                }
+
+                return sb.toString();
+            } catch (IOException e) {
+                Log.d(TAG, "doAddress: " + e.getMessage());
+
+            }
+            Toast.makeText(this, "GeoCoder service is slow - please wait", Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(this, "GeoCoder service timed out - please try again", Toast.LENGTH_LONG).show();
+        return null;
+    }
+
+
+
+    public void noLocationAvailable() {
+        Toast.makeText(this, "No location providers were available", Toast.LENGTH_LONG).show();
+    }
+
+
+    /* END OF LOCATION METHODS */
+
+    /* START OF CLICK METHODS */
+
+    @Override
     public void onClick(View v){
         Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
     }
@@ -64,6 +182,10 @@ public class MainActivity extends AppCompatActivity
 
         return false;
     }
+
+    /* END OF CLICK METHODS */
+
+    /* START OF MENU METHODS */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -84,6 +206,10 @@ public class MainActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /* END OF MENU METHODS */
+
+    /* START OF DIALOGS */
 
     public void searchDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -120,4 +246,8 @@ public class MainActivity extends AppCompatActivity
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    /* END OF DIALOGS */
+
+
 }
