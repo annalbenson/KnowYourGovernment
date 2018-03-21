@@ -1,5 +1,6 @@
 package com.annabenson.knowyourgovernment;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ public class OfficialAdapter extends RecyclerView.Adapter<OfficialViewHolder> {
     public static final String TAG = "OfficialAdapter";
     private List<Official> officialList;
     private MainActivity mainActivity;
+
 
     public OfficialAdapter(List<Official> offList, MainActivity ma){
         this.officialList = offList;
@@ -39,8 +41,8 @@ public class OfficialAdapter extends RecyclerView.Adapter<OfficialViewHolder> {
     @Override
     public void onBindViewHolder(OfficialViewHolder holder, int position){
         Official official = officialList.get(position);
-        holder.name.setText(official.getName());
-
+        holder.name.setText(String.format("%s (%s)",official.getName(),official.getParty()));
+        holder.office.setText(official.getOffice());
     }
 
     @Override

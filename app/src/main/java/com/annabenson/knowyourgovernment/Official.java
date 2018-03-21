@@ -13,13 +13,13 @@ public class Official {
 
     // Note: Defaults with be "No Data Provided"
 
-    // from offices section: 6/16 pdf
+    // In Recycler View Entry
     private String name;
     private String office;
-    // from officials section: 7/16 pdf
-    private String address;
     private String party;
 
+    // In Official Detail Activity
+    private String address;
     private String [] phones;
     private String [] urls;
     private String [] emails;
@@ -27,16 +27,20 @@ public class Official {
     private String photoUrl;
     private String [] channels; // social media type and id
 
-    public Official(String name, String office, String address, String party, String[] phones, String[] urls, String[] emails, String photoUrl, String[] channels) {
+    public Official(String name, String office, String party, String address, String[] phones, String[] urls, String[] emails, String photoUrl, String[] channels) {
         this.name = name;
         this.office = office;
-        this.address = address;
         this.party = party;
+        this.address = address;
         this.phones = phones;
         this.urls = urls;
         this.emails = emails;
         this.photoUrl = photoUrl;
         this.channels = channels;
+    }
+
+    public  Official(String name, String office, String party){
+            setName(name); setOffice(office); setParty(party);
     }
 
     public String getName() {
