@@ -1,5 +1,6 @@
 package com.annabenson.knowyourgovernment;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Arrays;
 // Purpose: Hold Official Data in the RecyclerView
     // Dev Plan 1b)
 
-public class Official {
+public class Official implements Serializable {
 
     // Note: Defaults with be "No Data Provided"
 

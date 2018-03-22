@@ -174,6 +174,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View v){
         Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+
+
+        Intent intent = new Intent(MainActivity.this, OfficialActivity.class);
+        // get official
+        int pos = recyclerView.getChildLayoutPosition(v);
+        Official o = officalList.get(pos);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("official", o);
+        intent.putExtras(bundle); // Extra"s" because passing a bundle
+        startActivity(intent);
     }
     @Override
     public boolean onLongClick(View v){
