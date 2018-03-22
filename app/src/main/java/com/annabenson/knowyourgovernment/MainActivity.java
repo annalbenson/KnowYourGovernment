@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v){
         Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
 
+        // xyz
 
         Intent intent = new Intent(MainActivity.this, OfficialActivity.class);
         // get official
