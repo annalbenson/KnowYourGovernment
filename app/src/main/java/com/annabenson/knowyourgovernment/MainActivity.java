@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity
             Official o = new Official("Name" + i, "Office" + i, "Party" + i);
             officalList.add(o);
         }
+        String [] phones = {"123-555-4567"};
+        String [] urls = {"www.nope.com"};
+        String [] emails = {"jdoe.gmail.com"};
+        String [] channels = {"facebook", "twitter"};
+        Official x = new Official("John Doe", "County Clerk", "Democratic", "1234 Main St", phones, urls, emails, "photo.com", channels );
+        officalList.add(x);
 
         officialAdapter.notifyDataSetChanged();
 
@@ -184,6 +190,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putSerializable("official", o);
         intent.putExtras(bundle); // Extra"s" because passing a bundle
+
         startActivity(intent);
     }
     @Override
