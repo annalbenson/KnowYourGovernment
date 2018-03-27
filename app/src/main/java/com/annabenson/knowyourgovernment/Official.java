@@ -21,27 +21,30 @@ public class Official implements Serializable {
 
     // In Official Detail Activity
     private String address;
-    private String [] phones;
-    private String [] urls;
-    private String [] emails;
+    // Note: "There may be more than one -- just use the first entry"
+    private String phone;
+    private String url;
+    private String email;
 
     private String photoUrl;
-    private String [] channels; // social media type and id
+    private String googleplus;
+    private String facebook;
+    private String twitter;
+    private String youtube;
 
-    public Official(String name, String office, String party, String address, String[] phones, String[] urls, String[] emails, String photoUrl, String[] channels) {
+    public Official(String name, String office, String party, String address, String phone, String url, String email, String photoUrl, String googleplus, String facebook, String twitter, String youtube) {
         this.name = name;
         this.office = office;
         this.party = party;
         this.address = address;
-        this.phones = phones;
-        this.urls = urls;
-        this.emails = emails;
+        this.phone = phone;
+        this.url = url;
+        this.email = email;
         this.photoUrl = photoUrl;
-        this.channels = channels;
-    }
-
-    public  Official(String name, String office, String party){
-            setName(name); setOffice(office); setParty(party);
+        this.googleplus = googleplus;
+        this.facebook = facebook;
+        this.twitter = twitter;
+        this.youtube = youtube;
     }
 
     public String getName() {
@@ -60,14 +63,6 @@ public class Official implements Serializable {
         this.office = office;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getParty() {
         return party;
     }
@@ -76,28 +71,36 @@ public class Official implements Serializable {
         this.party = party;
     }
 
-    public String[] getPhones() {
-        return phones;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPhones(String[] phones) {
-        this.phones = phones;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String[] getUrls() {
-        return urls;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUrls(String[] urls) {
-        this.urls = urls;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String[] getEmails() {
-        return emails;
+    public String getUrl() {
+        return url;
     }
 
-    public void setEmails(String[] emails) {
-        this.emails = emails;
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhotoUrl() {
@@ -108,12 +111,36 @@ public class Official implements Serializable {
         this.photoUrl = photoUrl;
     }
 
-    public String[] getChannels() {
-        return channels;
+    public String getGoogleplus() {
+        return googleplus;
     }
 
-    public void setChannels(String[] channels) {
-        this.channels = channels;
+    public void setGoogleplus(String googleplus) {
+        this.googleplus = googleplus;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getYoutube() {
+        return youtube;
+    }
+
+    public void setYoutube(String youtube) {
+        this.youtube = youtube;
     }
 
     @Override
@@ -121,13 +148,16 @@ public class Official implements Serializable {
         return "Official{" +
                 "name='" + name + '\'' +
                 ", office='" + office + '\'' +
-                ", address='" + address + '\'' +
                 ", party='" + party + '\'' +
-                ", phones=" + Arrays.toString(phones) +
-                ", urls=" + Arrays.toString(urls) +
-                ", emails=" + Arrays.toString(emails) +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", url='" + url + '\'' +
+                ", email='" + email + '\'' +
                 ", photoUrl='" + photoUrl + '\'' +
-                ", channels=" + Arrays.toString(channels) +
+                ", googleplus='" + googleplus + '\'' +
+                ", facebook='" + facebook + '\'' +
+                ", twitter='" + twitter + '\'' +
+                ", youtube='" + youtube + '\'' +
                 '}';
     }
 }

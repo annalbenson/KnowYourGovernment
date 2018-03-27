@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainActivity";
     private MainActivity mainActivity = this;
     private RecyclerView recyclerView;
-    private List<Official> officalList = new ArrayList<>();
+    private List<Official> officialList = new ArrayList<>();
     private OfficialAdapter officialAdapter;
 
     private TextView locationText;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recycler);
-        officialAdapter = new OfficialAdapter(officalList, this);
+        officialAdapter = new OfficialAdapter(officialList, this);
         recyclerView.setAdapter(officialAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -56,18 +56,36 @@ public class MainActivity extends AppCompatActivity
         //locationText.setText("OK");
 
 
-
+        /*
         for( int i = 0; i < 5; i++){
             Log.d(TAG, "onCreate: Creating dummy official " + i);
-            Official o = new Official("Name" + i, "Office" + i, "Party" + i);
-            officalList.add(o);
+            //Official o = new Official("Name" + i, "Office" + i, "Party" + i);
+            //officialList.add(o);
         }
-        String [] phones = {"123-555-4567"};
-        String [] urls = {"www.nope.com"};
-        String [] emails = {"jdoe.gmail.com"};
-        String [] channels = {"facebook", "twitter"};
-        Official x = new Official("John Doe", "County Clerk", "Democratic", "1234 Main St", phones, urls, emails, "photo.com", channels );
-        officalList.add(x);
+        */
+
+
+        //Any text data not supplied use "No Data Provided"
+        // Except, party, then the default is "Unknown"
+        Official xy = new Official("John Doe", "County Clerk", "Democratic", "1234 Main St", "123-555-4567", "www.nope.com", "jdoe.gmail.com", "photo.com", "gplus", "facebook", "tweet", "yt" );
+        Official xx = new Official("Jane Doe", "Comptroller", "Republican", "No Data Provided", "123-555-4567", "www.nope.com", "jdoe.gmail.com", "photo.com", "gplus", "facebook", "tweet", "yt" );
+        Official unknowns = new Official(
+                "Anna Benson",
+                "Senator",
+                "Unknown",
+                "3015 S Union",
+                "No Data Provided",
+                "www.anna.com",
+                "alb.gmail.com",
+                "photo.com",
+                "gplus.anna",
+                "fbook.anna",
+                "tweet.alb",
+                "No Data Provided"
+        );
+        officialList.add(xy);
+        officialList.add(xx);
+        officialList.add(unknowns);
 
         officialAdapter.notifyDataSetChanged();
 
@@ -186,7 +204,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this, OfficialActivity.class);
         // get official
         int pos = recyclerView.getChildLayoutPosition(v);
-        Official o = officalList.get(pos);
+        Official o = officialList.get(pos);
         Bundle bundle = new Bundle();
         bundle.putSerializable("official", o);
         intent.putExtras(bundle); // Extra"s" because passing a bundle
