@@ -83,10 +83,21 @@ public class OfficialActivity extends AppCompatActivity {
             }
         }
 
+        imageView.setImageResource(R.drawable.ic_hourglass_empty_white_24dp);
+
         if ( official.getPhotoUrl().equals(NO_DATA)) { /*imageView.setImage to generic*/}
         else{
 
         }
+
+
+        /* loading image
+        1) not async, in example done in MainActivity
+
+
+
+        */
+
 
 
         //loadImage();
