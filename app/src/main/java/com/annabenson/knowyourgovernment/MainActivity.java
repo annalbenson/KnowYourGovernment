@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity
 
         //Any text data not supplied use "No Data Provided"
         // Except, party, then the default is "Unknown"
+        /*
         Official xy = new Official("John Doe", "County Clerk", "Democratic", "1234 Main St", "123-555-4567", "www.nope.com", "jdoe.gmail.com", "photo.com", "gplus", "facebook", "tweet", "yt" );
         Official xx = new Official("Jane Doe", "Comptroller", "Republican", "No Data Provided", "123-555-4567", "www.nope.com", "jdoe.gmail.com", "photo.com", "gplus", "facebook", "tweet", "yt" );
         Official unknowns = new Official(
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         officialList.add(unknowns);
 
         officialAdapter.notifyDataSetChanged();
-
+        */
         /// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         new AsyncOfficialLoader(mainActivity).execute("60616");
         /// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -103,6 +104,25 @@ public class MainActivity extends AppCompatActivity
 
 
     /* END OF ON METHODS */
+
+
+    /* START OF RECYCLERVIEW METHODS */
+
+    public void addOfficials(ArrayList<Official> offList){
+
+        if(offList.size() == 0){
+            Log.d(TAG, "addOfficials: empty list, no officials to add");
+        }
+        else {
+            for (int i = 0; i < offList.size(); i++){
+                officialList.add(offList.get(i));
+            }
+        }
+        officialAdapter.notifyDataSetChanged();
+    }
+
+    /* END OF RECYCLERVIEW METHODS*/
+
     /* START OF LOCATION METHODS */
 
 

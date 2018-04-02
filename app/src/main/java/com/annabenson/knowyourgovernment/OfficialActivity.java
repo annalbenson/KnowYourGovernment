@@ -83,6 +83,13 @@ public class OfficialActivity extends AppCompatActivity {
             }
         }
 
+        if ( official.getPhotoUrl().equals(NO_DATA)) { /*imageView.setImage to generic*/}
+        else{
+
+        }
+
+
+        //loadImage();
 
         //imageView.setText();
 
@@ -108,6 +115,10 @@ public class OfficialActivity extends AppCompatActivity {
 
     private static void hideView(View v){
         v.setVisibility(View.GONE);
+    }
+
+    private static void loadImage(View v, String Url){
+
     }
 
 }

@@ -43,6 +43,8 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
         ArrayList<Official> officialList = parseJSON(s);
         Log.d(TAG, "onPostExecute: In post execute");
         // call main activity methods as appropriate
+        mainActivity.addOfficials(officialList);
+
     }
 
     @Override
@@ -175,57 +177,62 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
                     String phones = ( innerObj.has("phones") ? innerObj.getJSONArray("phones").getString(0) : NO_DATA );
                     Log.d(TAG, "parseJSON: phone number: " + phones);
 
-                    String urls = ( innerObj.has("urls") ? innerObj.getJSONArray("urls").getString(0): NO_DATA );
+                    String urls = ( innerObj.has("urls") ? innerObj.getJSONArray("urls").getString(0) : NO_DATA );
                     Log.d(TAG, "parseJSON: urls: " + urls);
 
-                    // need to check for address line fields
-                    // throws if no mapping exists
-                    //JSONArray addressArray = innerObj.getJSONArray("address");
-                    //JSONObject addressObject = addressArray.getJSONObject(0);
+                    String emails = (innerObj.has("emails") ? innerObj.getJSONArray("emails").getString(0) : NO_DATA );
+                    Log.d(TAG, "parseJSON: emails: " + emails);
 
-                    //JSONObject addressObject = innerObj.getJSONObject("address");
+                    String photoURL = (innerObj.has("photoUrl") ? innerObj.getString("photoUrl") : NO_DATA);
+                    Log.d(TAG, "parseJSON: photoUrl: " + photoURL);
 
-                    //String x = innerObj.getString("address");
-                    //Log.d(TAG, "parseJSON: address x -> " + x);
+                    //String googleplus = (innerObj.getJSONArray("channels").getJSONObject(0) ? : );
 
-/*
-                    String address = "";
-                    if(addressObject.has("line1")){
-                        address += innerObj.getString("line1") + "\n";
+                    JSONArray channels = ( innerObj.has("channels") ? innerObj.getJSONArray("channels") : null );
+                    String googleplus = ""; String facebook = ""; String twitter = ""; String youtube = "";
+
+                    if(channels != null){
+                        for(int k = 0; k < channels.length(); k++ ){
+                            String type = channels.getJSONObject(k).getString("type");
+                            Log.d(TAG, "parseJSON: type at index " + k + " is " + type );
+                            switch (type){
+                                case "GooglePlus":
+                                    googleplus = channels.getJSONObject(k).getString("id");
+                                    break;
+                                case "Facebook":
+                                    facebook = channels.getJSONObject(k).getString("id");
+                                    break;
+                                case "Twitter":
+                                    twitter = channels.getJSONObject(k).getString("id");
+                                    break;
+                                case "YouTube":
+                                    youtube = channels.getJSONObject(k).getString("id");
+                                    break;
+                                default:
+                                    Log.d(TAG, "parseJSON: non recognized social media");
+                                    break;
+                            }
+                        }
                     }
-                    if(addressObject.has("line2")){
-                        address += innerObj.getString("line2") + "\n";
-                    }
-                    if (addressObject.has("city") && obj.has("state") && obj.has("zip")) {
-                        address += innerObj.get("city") + obj.getString("state") + obj.getString("zip");
-
+                    else{ // is null
+                        googleplus = NO_DATA; facebook = NO_DATA;
+                        twitter = NO_DATA; youtube = NO_DATA;
                     }
 
-                    Log.d(TAG, "parseJSON: Address is: " + address);
-*/
-                    /*
-                    String party;
-                    if(obj.has("party")){
-                        party = obj.getString("party");
-                    }
-                    else{
-                        party = UNKNOWN;
-                    }
+                    Log.d(TAG, "parseJSON: GooglePlus? " + googleplus);
+                    Log.d(TAG, "parseJSON: Facebook? " + facebook);
+                    Log.d(TAG, "parseJSON: Twitter? " + twitter);
+                    Log.d(TAG, "parseJSON: YouTube? " + youtube);
 
-                    if(obj.has("phones")){
 
-                        // want only first entry, parse array?
-                        //String temp4 = obj.getString("phones");
-                    }
+                    /*DONE PARSING*/
 
-                    */
-
-                    //officialList.add(new Official(       ));
-
+                    // add official
+                    Official o = new Official(name, officeName, party,
+                            address, phones, urls, emails, photoURL,
+                            googleplus, facebook, twitter, youtube);
+                    officialList.add(o);
                 } // end of j for loop
-
-
-                //JSONObject obj2 = officials.getJSONObject()
             } // end of i for loop
 
             return officialList;
