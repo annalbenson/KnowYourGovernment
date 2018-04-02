@@ -89,6 +89,10 @@ public class MainActivity extends AppCompatActivity
 
         officialAdapter.notifyDataSetChanged();
 
+        /// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        new AsyncOfficialLoader(mainActivity).execute("60616");
+        /// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
     }
 
     @Override
@@ -114,20 +118,20 @@ public class MainActivity extends AppCompatActivity
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        Log.d(TAG, "onRequestPermissionsResult: CALL: " + permissions.length);
-        Log.d(TAG, "onRequestPermissionsResult: PERM RESULT RECEIVED");
+        //Log.d(TAG, "onRequestPermissionsResult: CALL: " + permissions.length);
+        //Log.d(TAG, "onRequestPermissionsResult: PERM RESULT RECEIVED");
 
         if (requestCode == 5) {
             Log.d(TAG, "onRequestPermissionsResult: permissions.length: " + permissions.length);
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        Log.d(TAG, "onRequestPermissionsResult: HAS PERM");
+                        //Log.d(TAG, "onRequestPermissionsResult: HAS PERM");
                         locator.setUpLocationManager();
                         locator.determineLocation();
                     } else {
                         Toast.makeText(this, "Location permission was denied - cannot determine address", Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "onRequestPermissionsResult: NO PERM");
+                        //Log.d(TAG, "onRequestPermissionsResult: NO PERM");
                     }
                 }
             }
@@ -137,7 +141,7 @@ public class MainActivity extends AppCompatActivity
 
     private String doAddress(double latitude, double longitude) {
 
-        Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
+        //Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
 
 
 
@@ -145,16 +149,16 @@ public class MainActivity extends AppCompatActivity
         for (int times = 0; times < 3; times++) {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
-                Log.d(TAG, "doAddress: Getting address now");
+                //Log.d(TAG, "doAddress: Getting address now");
 
 
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                Log.d(TAG, "doAddress: Num addresses: " + addresses.size());
+                //Log.d(TAG, "doAddress: Num addresses: " + addresses.size());
 
                 StringBuilder sb = new StringBuilder();
 
                 for (Address ad : addresses) {
-                    Log.d(TAG, "doLocation: " + ad);
+                  //  Log.d(TAG, "doLocation: " + ad);
 
                     //sb.append("\nAddress\n\n");
                     /*

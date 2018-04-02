@@ -45,7 +45,7 @@ public class Locator {
             @Override
             public void onLocationChanged(Location location) {
                 // called when new location found by network loc provider
-                Log.d(TAG, "onLocationChanged: ");
+                //Log.d(TAG, "onLocationChanged: ");
                 owner.setData(location.getLatitude(), location.getLongitude());
             }
 

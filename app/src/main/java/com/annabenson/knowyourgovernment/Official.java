@@ -12,7 +12,9 @@ import java.util.Arrays;
 
 public class Official implements Serializable {
 
-    // Note: Defaults with be "No Data Provided"
+    // Note: Defaults will be "No Data Provided" for all but Party, "Unknown" for Party
+    public static final String NO_DATA = "No Data Provided";
+    public static final String UNKNOWN = "Unknown";
 
     // In Recycler View Entry
     private String name;
@@ -31,6 +33,21 @@ public class Official implements Serializable {
     private String facebook;
     private String twitter;
     private String youtube;
+
+    public Official() {
+        this.name = NO_DATA;
+        this.office = NO_DATA;
+        this.party = UNKNOWN;
+        this.address = NO_DATA;
+        this.phone = NO_DATA;
+        this.url = NO_DATA;
+        this.email = NO_DATA;
+        this.photoUrl = NO_DATA;
+        this.googleplus = NO_DATA;
+        this.facebook = NO_DATA;
+        this.twitter = NO_DATA;
+        this.youtube = NO_DATA;
+    }
 
     public Official(String name, String office, String party, String address, String phone, String url, String email, String photoUrl, String googleplus, String facebook, String twitter, String youtube) {
         this.name = name;
