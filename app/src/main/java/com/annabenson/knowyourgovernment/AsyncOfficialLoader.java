@@ -133,6 +133,51 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
                     Log.d(TAG, "parseJSON: indices[j] -> " + indices[j]);
                     Log.d(TAG, "parseJSON: name -> " + name);
 
+
+                    String address = "";
+                    if(! innerObj.has("address")){
+                        address = NO_DATA;
+                    }
+                    else {
+                        JSONArray addressArray = innerObj.getJSONArray("address");
+                        JSONObject addressObject = addressArray.getJSONObject(0);
+                        // works ^^^^^^
+
+                        if (addressObject.has("line1")) {
+                            address += addressObject.getString("line1") + "\n";
+                            //Log.d(TAG, "parseJSON: address currently is " + address);
+                        }
+                        if (addressObject.has("line2")) {
+                            address += addressObject.getString("line2") + "\n";
+                            //Log.d(TAG, "parseJSON: address currently is " + address);
+                        }
+                        if (addressObject.has("city")) {
+                            address += addressObject.getString("city") + " ";
+                            //Log.d(TAG, "parseJSON: address currently is " + address);
+                        }
+                        if (addressObject.has("state")) {
+                            address += addressObject.getString("state") + ", ";
+                            //Log.d(TAG, "parseJSON: address currently is " + address);
+                        }
+                        if (addressObject.has("zip")) {
+                            address += addressObject.getString("zip");
+                            //Log.d(TAG, "parseJSON: address currently is " + address);
+                        }
+
+                        // Carolyn J. Gallagher has no value for address
+                    }
+                    Log.d(TAG, "parseJSON: address? " + address);
+
+
+                    String party = (innerObj.has("party") ? innerObj.getString("party") : UNKNOWN );
+                    Log.d(TAG, "parseJSON: party: " + party);
+
+                    String phones = ( innerObj.has("phones") ? innerObj.getJSONArray("phones").getString(0) : NO_DATA );
+                    Log.d(TAG, "parseJSON: phone number: " + phones);
+
+                    String urls = ( innerObj.has("urls") ? innerObj.getJSONArray("urls").getString(0): NO_DATA );
+                    Log.d(TAG, "parseJSON: urls: " + urls);
+
                     // need to check for address line fields
                     // throws if no mapping exists
                     //JSONArray addressArray = innerObj.getJSONArray("address");
@@ -140,8 +185,8 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
 
                     //JSONObject addressObject = innerObj.getJSONObject("address");
 
-                    String x = innerObj.getString("address");
-                    Log.d(TAG, "parseJSON: address x -> " + x);
+                    //String x = innerObj.getString("address");
+                    //Log.d(TAG, "parseJSON: address x -> " + x);
 
 /*
                     String address = "";
