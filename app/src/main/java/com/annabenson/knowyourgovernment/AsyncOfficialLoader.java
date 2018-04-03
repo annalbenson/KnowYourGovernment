@@ -35,7 +35,7 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPreExecute(){
-        Toast.makeText(mainActivity, "Loading Official Data", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mainActivity, "Loading Official Data", Toast.LENGTH_SHORT).show();
     }
 
     @Override

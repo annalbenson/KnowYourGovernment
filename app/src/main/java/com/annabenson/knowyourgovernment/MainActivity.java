@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.app.AlertDialog;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().getDecorView().setBackgroundColor( getResources().getColor( R.color.purple));
 
         recyclerView = findViewById(R.id.recycler);
         officialAdapter = new OfficialAdapter(officialList, this);
@@ -202,16 +205,16 @@ public class MainActivity extends AppCompatActivity
                 Log.d(TAG, "doAddress: " + e.getMessage());
 
             }
-            Toast.makeText(this, "GeoCoder service is slow - please wait", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "GeoCoder service is slow - please wait", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(this, "GeoCoder service timed out - please try again", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "GeoCoder service timed out - please try again", Toast.LENGTH_LONG).show();
         return null;
     }
 
 
 
     public void noLocationAvailable() {
-        Toast.makeText(this, "No location providers were available", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "No location providers were available", Toast.LENGTH_LONG).show();
     }
 
 
@@ -221,7 +224,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v){
-        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
 
         // xyz
 
@@ -237,7 +240,7 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public boolean onLongClick(View v){
-        Toast.makeText(this, "Long Clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Long Clicked", Toast.LENGTH_SHORT).show();
         int pos = recyclerView.getChildLayoutPosition(v);
 
         return false;
