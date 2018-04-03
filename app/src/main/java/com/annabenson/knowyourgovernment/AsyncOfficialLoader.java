@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -30,6 +31,13 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
     public static final String NO_DATA = "No Data Provided";
     public static final String UNKNOWN = "Unknown";
 
+    // normalized input fields
+    private String city;
+    private String state;
+    private String zip;
+
+    private boolean fileFound = true;
+
 
     public AsyncOfficialLoader(MainActivity ma){ mainActivity = ma;}
 
@@ -40,10 +48,17 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPostExecute(String s){
-        ArrayList<Official> officialList = parseJSON(s);
         Log.d(TAG, "onPostExecute: In post execute");
         // call main activity methods as appropriate
-        mainActivity.addOfficials(officialList);
+        if(s != null){
+            ArrayList<Official> officialList = parseJSON(s);
+            mainActivity.addOfficials(officialList);
+            mainActivity.setLocatonDisplay(city, state, zip);
+        }
+        else{
+            Toast.makeText(mainActivity, "No data for that location",Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -73,7 +88,12 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
 
             //Log.d(TAG, "doInBackground: " + sb.toString());
 
-        } catch (Exception e) {
+        }
+        catch (FileNotFoundException e){
+            fileFound = false;
+            return null;
+        }
+        catch (Exception e) {
             Log.e(TAG, "doInBackground: ", e);
             return null;
         }
@@ -96,12 +116,13 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
 
 
             // parse normalizedInput, this is for location display in our activities
-            String city = normalizedInput.getString("city");
-            String state = normalizedInput.getString("state");
-            String zip = normalizedInput.getString("zip");
+            city = normalizedInput.getString("city");
+            state = normalizedInput.getString("state");
+            zip = normalizedInput.getString("zip");
 
-            Log.d(TAG, "parseJSON: city, state, zip -> " + city + ", " + state + ", " + zip);
-            // need somewhere to put this information
+            //Log.d(TAG, "parseJSON: city, state, zip -> " + city + ", " + state + ", " + zip);
+            // will be sent to MainActivity by postExecute
+
             // parse offices
             
             for(int i = 0;i < offices.length(); i++){
@@ -111,8 +132,8 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
 
                 //Log.d(TAG, "parseJSON: officialIndices as String: " + officialIndices);
 
-                Log.d(TAG, "parseJSON: Office Name: " + officeName);
-                Log.d(TAG, "parseJSON: Official Indices: " + officialIndices);
+                //Log.d(TAG, "parseJSON: Office Name: " + officeName);
+                //Log.d(TAG, "parseJSON: Official Indices: " + officialIndices);
 
                 // turn officialndices into int array
 
@@ -132,8 +153,8 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
                     JSONObject innerObj = officials.getJSONObject(indices[j]);
                     String name = innerObj.getString("name");
 
-                    Log.d(TAG, "parseJSON: indices[j] -> " + indices[j]);
-                    Log.d(TAG, "parseJSON: name -> " + name);
+                    //Log.d(TAG, "parseJSON: indices[j] -> " + indices[j]);
+                    //Log.d(TAG, "parseJSON: person's name -> " + name);
 
 
                     String address = "";
@@ -168,23 +189,23 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
 
                         // Carolyn J. Gallagher has no value for address
                     }
-                    Log.d(TAG, "parseJSON: address? " + address);
+                    //Log.d(TAG, "parseJSON: address? " + address);
 
 
                     String party = (innerObj.has("party") ? innerObj.getString("party") : UNKNOWN );
-                    Log.d(TAG, "parseJSON: party: " + party);
+                    //Log.d(TAG, "parseJSON: party: " + party);
 
                     String phones = ( innerObj.has("phones") ? innerObj.getJSONArray("phones").getString(0) : NO_DATA );
-                    Log.d(TAG, "parseJSON: phone number: " + phones);
+                    //Log.d(TAG, "parseJSON: phone number: " + phones);
 
                     String urls = ( innerObj.has("urls") ? innerObj.getJSONArray("urls").getString(0) : NO_DATA );
-                    Log.d(TAG, "parseJSON: urls: " + urls);
+                    //Log.d(TAG, "parseJSON: urls: " + urls);
 
                     String emails = (innerObj.has("emails") ? innerObj.getJSONArray("emails").getString(0) : NO_DATA );
-                    Log.d(TAG, "parseJSON: emails: " + emails);
+                    //Log.d(TAG, "parseJSON: emails: " + emails);
 
                     String photoURL = (innerObj.has("photoUrl") ? innerObj.getString("photoUrl") : NO_DATA);
-                    Log.d(TAG, "parseJSON: photoUrl: " + photoURL);
+                    //Log.d(TAG, "parseJSON: photoUrl: " + photoURL);
 
                     //String googleplus = (innerObj.getJSONArray("channels").getJSONObject(0) ? : );
 
@@ -194,7 +215,7 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
                     if(channels != null){
                         for(int k = 0; k < channels.length(); k++ ){
                             String type = channels.getJSONObject(k).getString("type");
-                            Log.d(TAG, "parseJSON: type at index " + k + " is " + type );
+                            //Log.d(TAG, "parseJSON: type at index " + k + " is " + type );
                             switch (type){
                                 case "GooglePlus":
                                     googleplus = channels.getJSONObject(k).getString("id");
@@ -209,7 +230,7 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
                                     youtube = channels.getJSONObject(k).getString("id");
                                     break;
                                 default:
-                                    Log.d(TAG, "parseJSON: non recognized social media");
+                                    //Log.d(TAG, "parseJSON: non recognized social media");
                                     break;
                             }
                         }
@@ -219,10 +240,10 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
                         twitter = NO_DATA; youtube = NO_DATA;
                     }
 
-                    Log.d(TAG, "parseJSON: GooglePlus? " + googleplus);
-                    Log.d(TAG, "parseJSON: Facebook? " + facebook);
-                    Log.d(TAG, "parseJSON: Twitter? " + twitter);
-                    Log.d(TAG, "parseJSON: YouTube? " + youtube);
+                    //Log.d(TAG, "parseJSON: GooglePlus? " + googleplus);
+                    //Log.d(TAG, "parseJSON: Facebook? " + facebook);
+                    //Log.d(TAG, "parseJSON: Twitter? " + twitter);
+                    //Log.d(TAG, "parseJSON: YouTube? " + youtube);
 
 
                     /*DONE PARSING*/

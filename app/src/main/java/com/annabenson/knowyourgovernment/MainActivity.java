@@ -42,7 +42,11 @@ public class MainActivity extends AppCompatActivity
     private TextView locationText;
     private Locator locator;
 
-    private String currentZip;
+
+    // Normalized Input Fields
+    private String displayCity = "";
+    private String displayState = "";
+    private String displayZip = "";
 
     // initial comment 3/19
     @Override
@@ -108,8 +112,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume(){
 
-        Log.d(TAG, "onResume: currentZip: " + currentZip);
-        new AsyncOfficialLoader(mainActivity).execute(currentZip);
+        Log.d(TAG, "onResume: display vars: " + displayCity + " " + displayState + " " + displayZip);
+        setLocatonDisplay(displayCity,displayState,displayZip);
+        new AsyncOfficialLoader(mainActivity).execute(displayZip);
+
         /*
         if(locator != null){
             locator.shutdown();
@@ -121,33 +127,30 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        /*
-        if(locator != null){
-            locator.shutdown();
-        }
-        */
+        //locator.shutdown();
         super.onDestroy();
     }
 
 
-    /* END OF ON METHODS */
+    /* END OF ON_ METHODS */
 
 
     /* START OF RECYCLERVIEW METHODS */
 
     public void addOfficials(ArrayList<Official> offList){
 
+        officialList.clear();
+        if(offList != null){
 
-        if(offList.size() == 0){
-            Log.d(TAG, "addOfficials: empty list, no officials to add");
-        }
-        else {
-            officialList.clear(); // get rid of old
             for (int i = 0; i < offList.size(); i++){
                 officialList.add(offList.get(i));
             }
+            officialAdapter.notifyDataSetChanged();
         }
-        officialAdapter.notifyDataSetChanged();
+        else{
+            Log.d(TAG, "addOfficials: null offList");
+        }
+
     }
 
     /* END OF RECYCLERVIEW METHODS*/
@@ -157,9 +160,9 @@ public class MainActivity extends AppCompatActivity
 
     public void setData(double lat, double lon){
         // gets the results of Locator
-
-        String address = doAddress(lat,lon);
-        locationText.setText(address);
+        doAddress(lat,lon);
+        //no return
+        //locationText.setText(address);
     }
 
     @Override
@@ -188,7 +191,16 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onRequestPermissionsResult: Exiting onRequestPermissionsResult");
     }
 
-    private String doAddress(double latitude, double longitude) {
+    public void setLocatonDisplay(String city, String state, String zip){
+        Log.d(TAG, "setLocatonDisplay: arg: " + city + " " + state + " " + zip);
+        displayCity = city;
+        displayState = state;
+        displayZip = zip;
+        String s = String.format("%s, %s %s", displayCity, displayState, displayZip);
+        locationText.setText(s);
+    }
+
+    private void doAddress(double latitude, double longitude) {
 
         //Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
 
@@ -199,31 +211,29 @@ public class MainActivity extends AppCompatActivity
                 //Log.d(TAG, "doAddress: Getting address now");
 
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                Log.d(TAG, "doAddress: Num addresses: " + addresses.size());
+                //Log.d(TAG, "doAddress: Num addresses: " + addresses.size());
 
-                StringBuilder sb = new StringBuilder();
-
-
+                //StringBuilder sb = new StringBuilder();
 
                 for (Address ad : addresses) {
-                    Log.d(TAG, "X: doLocation: " + ad);
+                    //Log.d(TAG, "X: doLocation: " + ad);
 
-                    Log.d(TAG, "doAddress: ZZZ" + ad.getAddressLine(0));
+                    //Log.d(TAG, "doAddress: ZZZ" + ad.getAddressLine(0));
                     String addressLine = ad.getAddressLine(0);
                     String [] addressArray = addressLine.split(",");
 
-                    for( String s : addressArray ){
-                        Log.d(TAG, "doAddress: s " + s);
-                    }
+                    /*for( String s : addressArray ){Log.d(TAG, "doAddress: s " + s);}*/
+                    String city = addressArray[1].trim();
+                    String [] sZip = addressArray[2].trim().split(" ");
+                    String state = sZip[0];
+                    String zip = sZip[1];
+                    //String stateZip = (addressArray[2]).trim();
+                    //int idx = stateZip.indexOf(" "); // space in between State and ZIP
+                    //currentZip = stateZip.substring(idx,stateZip.length()).trim();
+                    //Log.d(TAG, "doAddress: currentZip: " + currentZip);
 
-
-                    sb.append( addressArray[1].trim() + ", ");
-                    sb.append(addressArray[2].trim());
-
-                    String stateZip = (addressArray[2]).trim();
-                    int idx = stateZip.indexOf(" "); // space in between State and ZIP
-                    currentZip = stateZip.substring(idx,stateZip.length()).trim();
-                    Log.d(TAG, "doAddress: currentZip: " + currentZip);
+                    Log.d(TAG, "doAddress: setting location display " + city + ", " + state + " " + zip);
+                    setLocatonDisplay(city,state,zip);
 
                     //sb.append(ad.getAddressLine(0));
                     //sb.append("\nAddress\n\n");
@@ -237,7 +247,7 @@ public class MainActivity extends AppCompatActivity
                     //sb.append("\t" + ad.getCountryName() + " (" + ad.getCountryCode() + ")\n");
                 }
 
-                return sb.toString();
+                //return sb.toString();
             } catch (IOException e) {
                 Log.d(TAG, "doAddress: " + e.getMessage());
 
@@ -245,7 +255,7 @@ public class MainActivity extends AppCompatActivity
             //Toast.makeText(this, "GeoCoder service is slow - please wait", Toast.LENGTH_SHORT).show();
         }
         //Toast.makeText(this, "GeoCoder service timed out - please try again", Toast.LENGTH_LONG).show();
-        return null;
+        //return null;
     }
 
 
@@ -272,6 +282,9 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putSerializable("official", o);
         intent.putExtras(bundle); // Extra"s" because passing a bundle
+        intent.putExtra("city", displayCity);
+        intent.putExtra("state", displayState);
+        intent.putExtra("zip", displayZip);
 
         startActivity(intent);
     }
@@ -297,6 +310,16 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.location:
+                Log.d(TAG, "onOptionsItemSelected: search clicked");
+                /*
+                if(locator.getLocationListener() != null ){
+                    Log.d(TAG, "onOptionsItemSelected: loc listener not null, shutting down");
+                    locator.shutdown();    
+                }
+                else{
+                    Log.d(TAG, "onOptionsItemSelected: null, loc listener already shut down");
+                }
+                */
                 searchDialog();
                 return true;
             case R.id.about:
@@ -325,12 +348,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String input = et.getText().toString();
-
-                // determine if city, state, or zip and proceed accordingly
-
-                new AsyncOfficialLoader(mainActivity).execute(currentZip);
-                TextView tv = findViewById(R.id.locationDisplay);
-                tv.setText(currentZip); // also need state and city
+                new AsyncOfficialLoader(mainActivity).execute(input);
+                //TextView tv = findViewById(R.id.locationDisplay);
+                //tv.setText(currentZip); // also need state and city
                 //Toast.makeText(mainActivity,"OK clicked", Toast.LENGTH_SHORT);
                 // do
             }

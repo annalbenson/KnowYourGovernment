@@ -76,6 +76,10 @@ public class Locator {
         locationManager = null;
     }
 
+    public android.location.LocationListener getLocationListener() {
+        return locationListener;
+    }
+
     // chooses the best location provider Network ==> Passive ==> GPA
    public void determineLocation(){
 

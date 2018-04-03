@@ -92,8 +92,13 @@ public class OfficialActivity extends AppCompatActivity {
         twitterButton.setImageResource(R.drawable.twittericon);
         facebookButton.setImageResource(R.drawable.facebookicon);
 
-        // Get passed Official object
+
         Intent intent = this.getIntent();
+        // get location data
+        intent.getExtra("state");
+
+
+        // Get passed Official object
         Bundle bundle = intent.getExtras();
 
         official = (Official) bundle.getSerializable("official");
