@@ -27,13 +27,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/purple"
-        android:text="Location Data TBD"
         android:textAlignment="center"
         android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="location zip goes here" />
+        tools:text="City, State ZIP" />
 
 </android.support.constraint.ConstraintLayout>

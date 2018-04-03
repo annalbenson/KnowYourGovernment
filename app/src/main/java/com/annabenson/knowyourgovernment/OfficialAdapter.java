@@ -29,7 +29,7 @@ public class OfficialAdapter extends RecyclerView.Adapter<OfficialViewHolder> {
     public OfficialViewHolder onCreateViewHolder(final ViewGroup parent, int viewType){
         Log.d(TAG, "onCreateViewHolder: Making New");
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.official_list_row, parent, false);
+                .inflate(R.layout.official_list_row2, parent, false);
 
         itemView.setOnClickListener(mainActivity);
         itemView.setOnLongClickListener(mainActivity);

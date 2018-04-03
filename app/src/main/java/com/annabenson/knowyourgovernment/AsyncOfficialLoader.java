@@ -65,20 +65,20 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
             InputStream is = conn.getInputStream();
             BufferedReader reader = new BufferedReader((new InputStreamReader(is)));
 
-            Log.d(TAG, "doInBackground: A");
+            //Log.d(TAG, "doInBackground: A");
             String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append('\n');
             }
 
-            Log.d(TAG, "doInBackground: " + sb.toString());
+            //Log.d(TAG, "doInBackground: " + sb.toString());
 
         } catch (Exception e) {
             Log.e(TAG, "doInBackground: ", e);
             return null;
         }
 
-        Log.d(TAG, "doInBackground: " + sb.toString());
+        //Log.d(TAG, "doInBackground: " + sb.toString());
         Log.d(TAG, "doInBackground: returning");
         return sb.toString();
 

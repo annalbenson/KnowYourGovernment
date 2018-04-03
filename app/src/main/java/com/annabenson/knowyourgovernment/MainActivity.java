@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static android.graphics.Color.WHITE;
 import static android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
 
 public class MainActivity extends AppCompatActivity
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity
 
     private TextView locationText;
     private Locator locator;
+
+    private String currentZip;
 
     // initial comment 3/19
     @Override
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         locationText = findViewById(R.id.locationDisplay);
+        locationText.setTextColor(getResources().getColor( R.color.white));
         locator = new Locator(this);
         //locationText.setText("OK");
 
@@ -93,15 +97,35 @@ public class MainActivity extends AppCompatActivity
 
         officialAdapter.notifyDataSetChanged();
         */
+
+
         /// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        new AsyncOfficialLoader(mainActivity).execute("60616");
+        //new AsyncOfficialLoader(mainActivity).execute("60616");
         /// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     }
 
     @Override
+    protected void onResume(){
+
+        Log.d(TAG, "onResume: currentZip: " + currentZip);
+        new AsyncOfficialLoader(mainActivity).execute(currentZip);
+        /*
+        if(locator != null){
+            locator.shutdown();
+        }
+        */
+
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
-        locator.shutdown();
+        /*
+        if(locator != null){
+            locator.shutdown();
+        }
+        */
         super.onDestroy();
     }
 
@@ -113,10 +137,12 @@ public class MainActivity extends AppCompatActivity
 
     public void addOfficials(ArrayList<Official> offList){
 
+
         if(offList.size() == 0){
             Log.d(TAG, "addOfficials: empty list, no officials to add");
         }
         else {
+            officialList.clear(); // get rid of old
             for (int i = 0; i < offList.size(); i++){
                 officialList.add(offList.get(i));
             }
@@ -166,38 +192,49 @@ public class MainActivity extends AppCompatActivity
 
         //Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
 
-
-
         List<Address> addresses = null;
         for (int times = 0; times < 3; times++) {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
                 //Log.d(TAG, "doAddress: Getting address now");
 
-
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                //Log.d(TAG, "doAddress: Num addresses: " + addresses.size());
+                Log.d(TAG, "doAddress: Num addresses: " + addresses.size());
 
                 StringBuilder sb = new StringBuilder();
 
-                for (Address ad : addresses) {
-                  //  Log.d(TAG, "doLocation: " + ad);
 
+
+                for (Address ad : addresses) {
+                    Log.d(TAG, "X: doLocation: " + ad);
+
+                    Log.d(TAG, "doAddress: ZZZ" + ad.getAddressLine(0));
+                    String addressLine = ad.getAddressLine(0);
+                    String [] addressArray = addressLine.split(",");
+
+                    for( String s : addressArray ){
+                        Log.d(TAG, "doAddress: s " + s);
+                    }
+
+
+                    sb.append( addressArray[1].trim() + ", ");
+                    sb.append(addressArray[2].trim());
+
+                    String stateZip = (addressArray[2]).trim();
+                    int idx = stateZip.indexOf(" "); // space in between State and ZIP
+                    currentZip = stateZip.substring(idx,stateZip.length()).trim();
+                    Log.d(TAG, "doAddress: currentZip: " + currentZip);
+
+                    //sb.append(ad.getAddressLine(0));
                     //sb.append("\nAddress\n\n");
                     /*
-                    Log.d(TAG, "doAddress: " + ad.getMaxAddressLineIndex());
-                    for (int i = 0; i <= ad.getMaxAddressLineIndex(); i++)
-                        sb.append("\t" + ad.getAddressLine(i) + "\t");
-
+                    for (int i = 0; i < ad.getMaxAddressLineIndex(); i++) {
+                        //Log.d(TAG, "doAddress: AAA");
+                        //Log.d(TAG, "doAddress: QQQ" + ad.getAddressLine(i));
+                        sb.append(ad.getAddressLine(i));
+                    }
                     */
                     //sb.append("\t" + ad.getCountryName() + " (" + ad.getCountryCode() + ")\n");
-
-                    String s = ad.getAddressLine(0);
-                    int idx = s.indexOf(',');
-                    s = s.substring(idx + 2, s.length());
-                    //int idx2 = s.length() - s.indexOf(',');
-                    //s = s.substring(0,s.length() - idx2);
-                    sb.append(s);
                 }
 
                 return sb.toString();
@@ -287,9 +324,13 @@ public class MainActivity extends AppCompatActivity
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String s = et.getText().toString();
+                String input = et.getText().toString();
+
+                // determine if city, state, or zip and proceed accordingly
+
+                new AsyncOfficialLoader(mainActivity).execute(currentZip);
                 TextView tv = findViewById(R.id.locationDisplay);
-                tv.setText("OK");
+                tv.setText(currentZip); // also need state and city
                 //Toast.makeText(mainActivity,"OK clicked", Toast.LENGTH_SHORT);
                 // do
             }
@@ -297,9 +338,10 @@ public class MainActivity extends AppCompatActivity
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: Cancel clicked, do nothing");
                 //Toast.makeText(mainActivity,"Cancel clicked", Toast.LENGTH_SHORT);
-                TextView tv = findViewById(R.id.locationDisplay);
-                tv.setText("CANCEL");
+                //TextView tv = findViewById(R.id.locationDisplay);
+                //tv.setText("CANCEL");
 
             }
         });
