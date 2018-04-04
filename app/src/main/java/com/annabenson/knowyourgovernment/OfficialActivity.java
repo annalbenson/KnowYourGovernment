@@ -33,7 +33,7 @@ public class OfficialActivity extends AppCompatActivity {
     public static final String GOP = "Republican";
 
     public TextView locationView;
-    private Locator locator;
+    //private Locator locator;
 
     public TextView officeView;
     public TextView nameView;
@@ -63,7 +63,7 @@ public class OfficialActivity extends AppCompatActivity {
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
 
         // Connect all layout views to variables
-        locationView = findViewById(R.id.locationID);
+        locationView = findViewById(R.id.locationID); locationView.setTextColor(Color.WHITE);
         officeView = findViewById(R.id.officeID);
         nameView = findViewById(R.id.nameID);
         partyView = findViewById(R.id.partyID);
@@ -94,14 +94,11 @@ public class OfficialActivity extends AppCompatActivity {
 
 
         Intent intent = this.getIntent();
-        // get location data
-        intent.getExtra("state");
-
-
-        // Get passed Official object
+        // get location text and official object from activity's intent
+        // set location heading to the header extra
         Bundle bundle = intent.getExtras();
-
         official = (Official) bundle.getSerializable("official");
+        locationView.setText(intent.getStringExtra("header"));
 
         // Populate those variables
         if( official.getOffice().equals(NO_DATA)){ hideView(officeView);}
@@ -191,10 +188,7 @@ public class OfficialActivity extends AppCompatActivity {
 
 
 
-
-
-        // how do?
-        //locator = new Locator();
+        //LINKIFY, PAGE 8/9
 
 
     }

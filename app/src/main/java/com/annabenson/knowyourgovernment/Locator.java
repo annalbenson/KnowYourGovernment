@@ -46,7 +46,7 @@ public class Locator {
             public void onLocationChanged(Location location) {
                 // called when new location found by network loc provider
                 //Log.d(TAG, "onLocationChanged: ");
-                owner.setData(location.getLatitude(), location.getLongitude());
+                owner.doLocationWork(location.getLatitude(), location.getLongitude());
             }
 
             @Override
@@ -65,7 +65,7 @@ public class Locator {
             }
         };
 
-        // register listener with Logation Manager to receive GPS loc updates
+        // register listener with Location Manager to receive GPS loc updates
         locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,1000, 0, locationListener);
 
@@ -90,8 +90,8 @@ public class Locator {
        if (locationManager != null) {
            Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
            if (loc != null) {
-               owner.setData(loc.getLatitude(), loc.getLongitude());
-               //Toast.makeText(owner, "Using " + LocationManager.NETWORK_PROVIDER + " Location provider", Toast.LENGTH_SHORT).show();
+               owner.doLocationWork(loc.getLatitude(), loc.getLongitude());
+               Toast.makeText(owner, "Using " + LocationManager.NETWORK_PROVIDER + " Location provider", Toast.LENGTH_SHORT).show();
                return;
            }
        }
@@ -99,8 +99,8 @@ public class Locator {
        if (locationManager != null) {
            Location loc = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
            if (loc != null) {
-               owner.setData(loc.getLatitude(), loc.getLongitude());
-               //Toast.makeText(owner, "Using " + LocationManager.PASSIVE_PROVIDER + " Location provider", Toast.LENGTH_SHORT).show();
+               owner.doLocationWork(loc.getLatitude(), loc.getLongitude());
+               Toast.makeText(owner, "Using " + LocationManager.PASSIVE_PROVIDER + " Location provider", Toast.LENGTH_SHORT).show();
                return;
            }
        }
@@ -108,8 +108,8 @@ public class Locator {
        if (locationManager != null) {
            Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
            if (loc != null) {
-               owner.setData(loc.getLatitude(), loc.getLongitude());
-               //Toast.makeText(owner, "Using " + LocationManager.GPS_PROVIDER + " Location provider", Toast.LENGTH_SHORT).show();
+               owner.doLocationWork(loc.getLatitude(), loc.getLongitude());
+               Toast.makeText(owner, "Using " + LocationManager.GPS_PROVIDER + " Location provider", Toast.LENGTH_SHORT).show();
                return;
            }
        }

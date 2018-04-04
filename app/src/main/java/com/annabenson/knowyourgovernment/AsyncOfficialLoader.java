@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by Anna on 3/27/2018.
  */
 
-public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
+public class AsyncOfficialLoader extends AsyncTask<String, Void, String> {
 
     private MainActivity mainActivity;
 
@@ -36,7 +36,7 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
     private String state;
     private String zip;
 
-    private boolean fileFound = true;
+    //private boolean fileFound = true;
 
 
     public AsyncOfficialLoader(MainActivity ma){ mainActivity = ma;}
@@ -49,27 +49,42 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String s){
         Log.d(TAG, "onPostExecute: In post execute");
-        // call main activity methods as appropriate
-        if(s != null){
-            ArrayList<Official> officialList = parseJSON(s);
-            mainActivity.addOfficials(officialList);
-            mainActivity.setLocatonDisplay(city, state, zip);
+
+        if(s == null){
+            Toast.makeText(mainActivity,"Civic Info service is unavailable",Toast.LENGTH_SHORT).show();
+            mainActivity.setOfficialList(null);
+            return;
         }
-        else{
-            Toast.makeText(mainActivity, "No data for that location",Toast.LENGTH_SHORT).show();
+        if(s.isEmpty()){
+            Toast.makeText(mainActivity,"No data is available for the specified location",Toast.LENGTH_SHORT).show();;
+            mainActivity.setOfficialList(null);
+            return;
         }
 
+        ArrayList<Official> officialList = parseJSON(s);
+        Object [] results = new Object[2];
+        results[0] = city + ", " + state + " " + zip;
+        results[1] = officialList;
+        mainActivity.setOfficialList(results);
+        return;
 
     }
 
     @Override
     protected String doInBackground(String... params){
 
+        //1) Create URL for Google Civic Info REST service using your API key and the zip code
+
         String dataURL = dataURLStem + params[0];
-        Log.d(TAG, "doInBackground: URL is " + dataURL);
+        //Log.d(TAG, "doInBackground: URL is " + dataURL);
         Uri dataUri = Uri.parse(dataURL);
         String urlToUse = dataUri.toString();
-        Log.d(TAG, "doInBackground: " + urlToUse);
+        //Log.d(TAG, "doInBackground: " + urlToUse);
+
+        //2) Connect to REST service
+        //- Response code 400 -> return empty string ???
+        //+ Exception -> Log an error message
+        //-
 
         StringBuilder sb = new StringBuilder();
         try {
@@ -90,10 +105,11 @@ public class AsyncOfficialLoader extends AsyncTask<String, Integer, String> {
 
         }
         catch (FileNotFoundException e){
-            fileFound = false;
+            //fileFound = false;
             return null;
         }
         catch (Exception e) {
+            //Exception -> Log an error message
             Log.e(TAG, "doInBackground: ", e);
             return null;
         }

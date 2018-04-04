@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity
     private Locator locator;
 
 
-    // Normalized Input Fields
-    private String displayCity = "";
-    private String displayState = "";
-    private String displayZip = "";
+
+    //private String displayCity = "";
+    //private String displayState = "";
+    //private String displayZip = "";
 
     // initial comment 3/19
     @Override
@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity
 
         getWindow().getDecorView().setBackgroundColor( getResources().getColor( R.color.purple));
 
+
+        // set up RV and Adapter (as usual)
         recyclerView = findViewById(R.id.recycler);
         officialAdapter = new OfficialAdapter(officialList, this);
         recyclerView.setAdapter(officialAdapter);
@@ -63,9 +65,12 @@ public class MainActivity extends AppCompatActivity
 
         locationText = findViewById(R.id.locationDisplay);
         locationText.setTextColor(getResources().getColor( R.color.white));
-        locator = new Locator(this);
+        locator = new Locator(this); // calls doLocationWork in this Activity
+
         //locationText.setText("OK");
 
+        //new AsyncOfficialLoader(mainActivity).execute(displayZip);
+        //setLocationDisplay(displayCity,displayState,displayZip);
 
         /*
         for( int i = 0; i < 5; i++){
@@ -112,9 +117,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume(){
 
-        Log.d(TAG, "onResume: display vars: " + displayCity + " " + displayState + " " + displayZip);
-        setLocatonDisplay(displayCity,displayState,displayZip);
-        new AsyncOfficialLoader(mainActivity).execute(displayZip);
+        //Log.d(TAG, "onResume: display vars: " + displayCity + " " + displayState + " " + displayZip);
+        //setLocatonDisplay(displayCity,displayState,displayZip);
+        //new AsyncOfficialLoader(mainActivity).execute(displayZip);
 
         /*
         if(locator != null){
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        //locator.shutdown();
+        locator.shutdown();
         super.onDestroy();
     }
 
@@ -137,8 +142,23 @@ public class MainActivity extends AppCompatActivity
 
     /* START OF RECYCLERVIEW METHODS */
 
-    public void addOfficials(ArrayList<Official> offList){
+    public void setOfficialList(Object[] results){
 
+        if(results == null){
+            locationText.setText("No Data For Location");
+            officialList.clear();
+        }
+        else{
+            locationText.setText(results[0].toString());
+            officialList.clear();
+            ArrayList<Official> offList = (ArrayList<Official>) results[1];
+            for(int i = 0; i < offList.size(); i++){
+                officialList.add( (Official) offList.get(i));
+            }
+        }
+        officialAdapter.notifyDataSetChanged();
+
+        /*
         officialList.clear();
         if(offList != null){
 
@@ -150,6 +170,7 @@ public class MainActivity extends AppCompatActivity
         else{
             Log.d(TAG, "addOfficials: null offList");
         }
+        */
 
     }
 
@@ -158,17 +179,10 @@ public class MainActivity extends AppCompatActivity
     /* START OF LOCATION METHODS */
 
 
-    public void setData(double lat, double lon){
-        // gets the results of Locator
-        doAddress(lat,lon);
-        //no return
-        //locationText.setText(address);
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         //Log.d(TAG, "onRequestPermissionsResult: CALL: " + permissions.length);
         //Log.d(TAG, "onRequestPermissionsResult: PERM RESULT RECEIVED");
@@ -181,6 +195,8 @@ public class MainActivity extends AppCompatActivity
                         //Log.d(TAG, "onRequestPermissionsResult: HAS PERM");
                         locator.setUpLocationManager();
                         locator.determineLocation();
+                        //Flow chart slide #2
+                        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
                     } else {
                         Toast.makeText(this, "Location permission was denied - cannot determine address", Toast.LENGTH_LONG).show();
                         //Log.d(TAG, "onRequestPermissionsResult: NO PERM");
@@ -191,16 +207,7 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onRequestPermissionsResult: Exiting onRequestPermissionsResult");
     }
 
-    public void setLocatonDisplay(String city, String state, String zip){
-        Log.d(TAG, "setLocatonDisplay: arg: " + city + " " + state + " " + zip);
-        displayCity = city;
-        displayState = state;
-        displayZip = zip;
-        String s = String.format("%s, %s %s", displayCity, displayState, displayZip);
-        locationText.setText(s);
-    }
-
-    private void doAddress(double latitude, double longitude) {
+    public void doLocationWork(double latitude, double longitude) {
 
         //Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
 
@@ -208,13 +215,37 @@ public class MainActivity extends AppCompatActivity
         for (int times = 0; times < 3; times++) {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
-                //Log.d(TAG, "doAddress: Getting address now");
+                Log.d(TAG, "doAddress: Getting address now");
 
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
                 //Log.d(TAG, "doAddress: Num addresses: " + addresses.size());
-
+                // Get the zip code from the first returned address
+                Address ad = addresses.get(0);
                 //StringBuilder sb = new StringBuilder();
 
+                String zip = ad.getPostalCode();
+
+                // Use that zip code to create & execute the Civic Info Downloader
+
+                new AsyncOfficialLoader(mainActivity).execute(zip);
+
+//                String addressLine = ad.getAddressLine(0);
+  //              String [] addressArray = addressLine.split(",");
+
+                    /*for( String s : addressArray ){Log.d(TAG, "doAddress: s " + s);}*/
+    //            String city = addressArray[1].trim();
+       //         String [] sZip = addressArray[2].trim().split(" ");
+      //        String state = sZip[0];
+
+                // Get the zip
+       //         String zip = sZip[1];
+
+
+
+
+                //
+
+                /*
                 for (Address ad : addresses) {
                     //Log.d(TAG, "X: doLocation: " + ad);
 
@@ -222,7 +253,7 @@ public class MainActivity extends AppCompatActivity
                     String addressLine = ad.getAddressLine(0);
                     String [] addressArray = addressLine.split(",");
 
-                    /*for( String s : addressArray ){Log.d(TAG, "doAddress: s " + s);}*/
+                    for( String s : addressArray ){Log.d(TAG, "doAddress: s " + s);}
                     String city = addressArray[1].trim();
                     String [] sZip = addressArray[2].trim().split(" ");
                     String state = sZip[0];
@@ -233,23 +264,25 @@ public class MainActivity extends AppCompatActivity
                     //Log.d(TAG, "doAddress: currentZip: " + currentZip);
 
                     Log.d(TAG, "doAddress: setting location display " + city + ", " + state + " " + zip);
-                    setLocatonDisplay(city,state,zip);
+                    setLocationDisplay(city,state,zip);
 
                     //sb.append(ad.getAddressLine(0));
                     //sb.append("\nAddress\n\n");
-                    /*
+
                     for (int i = 0; i < ad.getMaxAddressLineIndex(); i++) {
                         //Log.d(TAG, "doAddress: AAA");
                         //Log.d(TAG, "doAddress: QQQ" + ad.getAddressLine(i));
                         sb.append(ad.getAddressLine(i));
                     }
-                    */
+
                     //sb.append("\t" + ad.getCountryName() + " (" + ad.getCountryCode() + ")\n");
-                }
+                }*/
+
 
                 //return sb.toString();
             } catch (IOException e) {
                 Log.d(TAG, "doAddress: " + e.getMessage());
+                Toast.makeText(mainActivity,"Address cannot be acquired from provided latitude/longitude", Toast.LENGTH_SHORT).show();
 
             }
             //Toast.makeText(this, "GeoCoder service is slow - please wait", Toast.LENGTH_SHORT).show();
@@ -279,19 +312,25 @@ public class MainActivity extends AppCompatActivity
         // get official
         int pos = recyclerView.getChildLayoutPosition(v);
         Official o = officialList.get(pos);
+        // Add extra w/ heading
+        intent.putExtra("header", locationText.getText().toString() );
+        // Add extra w/ Official object
         Bundle bundle = new Bundle();
         bundle.putSerializable("official", o);
         intent.putExtras(bundle); // Extra"s" because passing a bundle
-        intent.putExtra("city", displayCity);
-        intent.putExtra("state", displayState);
-        intent.putExtra("zip", displayZip);
 
+        //intent.putExtra("city", displayCity);
+        //intent.putExtra("state", displayState);
+        //intent.putExtra("zip", displayZip);
+
+        // start the activity
         startActivity(intent);
     }
     @Override
     public boolean onLongClick(View v){
         //Toast.makeText(this, "Long Clicked", Toast.LENGTH_SHORT).show();
         int pos = recyclerView.getChildLayoutPosition(v);
+        onClick(v);
 
         return false;
     }
