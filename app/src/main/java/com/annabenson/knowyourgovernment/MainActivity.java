@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     private List<Official> officialList = new ArrayList<>();
     private OfficialAdapter officialAdapter;
 
-    private TextView locationText;
+    private TextView locationView;
     private Locator locator;
 
     @Override
@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(officialAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        locationText = findViewById(R.id.locationDisplay);
-        locationText.setTextColor(getResources().getColor( R.color.white));
+        locationView = findViewById(R.id.locationID);
+        locationView.setTextColor(getResources().getColor( R.color.white));
         locator = new Locator(this); // calls doLocationWork in this Activity
 
     }
@@ -83,11 +83,11 @@ public class MainActivity extends AppCompatActivity
     public void setOfficialList(Object[] results){
 
         if(results == null){
-            locationText.setText("No Data For Location");
+            locationView.setText("No Data For Location");
             officialList.clear();
         }
         else{
-            locationText.setText(results[0].toString());
+            locationView.setText(results[0].toString());
             officialList.clear();
             ArrayList<Official> offList = (ArrayList<Official>) results[1];
             for(int i = 0; i < offList.size(); i++){
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         int pos = recyclerView.getChildLayoutPosition(v);
         Official o = officialList.get(pos);
         // Add extra w/ heading
-        intent.putExtra("header", locationText.getText().toString() );
+        intent.putExtra("header", locationView.getText().toString() );
         // Add extra w/ Official object
         Bundle bundle = new Bundle();
         bundle.putSerializable("official", o);
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity
 
         if(requestCode == CLICK_REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                locationText.setText(data.getStringExtra("header"));
+                locationView.setText(data.getStringExtra("header"));
             }
         }
     }
@@ -259,19 +259,14 @@ public class MainActivity extends AppCompatActivity
             public void onClick(DialogInterface dialogInterface, int i) {
                 String input = et.getText().toString();
                 new AsyncOfficialLoader(mainActivity).execute(input);
-                //TextView tv = findViewById(R.id.locationDisplay);
-                //tv.setText(currentZip); // also need state and city
-                //Toast.makeText(mainActivity,"OK clicked", Toast.LENGTH_SHORT);
-                // do
+
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG, "onClick: Cancel clicked, do nothing");
-                //Toast.makeText(mainActivity,"Cancel clicked", Toast.LENGTH_SHORT);
-                //TextView tv = findViewById(R.id.locationDisplay);
-                //tv.setText("CANCEL");
+
 
             }
         });

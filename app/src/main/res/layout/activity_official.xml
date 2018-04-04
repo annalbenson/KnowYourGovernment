@@ -6,14 +6,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/locationID"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/purple"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="location" />
+
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationID">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <android.support.constraint.Guideline
                 android:id="@+id/onefourth"
@@ -27,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5"/>
+                app:layout_constraintGuide_percent="0.5" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/threefourths"
@@ -37,27 +57,15 @@
                 app:layout_constraintGuide_percent="0.75" />
 
             <TextView
-                android:id="@+id/locationID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="location" />
-
-            <TextView
                 android:id="@+id/officeID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationID"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/threefourths"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/onefourth"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="officeID" />
 
             <TextView
@@ -67,6 +75,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/officeID"
@@ -106,6 +116,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:textAlignment="viewStart"
+                android:textColorLink="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.261"
                 app:layout_constraintStart_toStartOf="@+id/onefourth"
@@ -120,6 +131,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 android:textAlignment="viewStart"
+                android:textColorLink="@color/white"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.261"
@@ -135,6 +147,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 android:textAlignment="viewStart"
+                android:textColorLink="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.261"
                 app:layout_constraintStart_toStartOf="@+id/onefourth"
@@ -149,6 +162,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:textAlignment="viewStart"
+                android:textColorLink="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.261"
                 app:layout_constraintStart_toStartOf="@+id/onefourth"
@@ -157,10 +171,11 @@
 
             <TextView
                 android:id="@+id/addressLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:textAlignment="textStart"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintHorizontal_bias="0.275"
                 app:layout_constraintStart_toStartOf="parent"
@@ -169,10 +184,11 @@
 
             <TextView
                 android:id="@+id/phoneLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:textAlignment="textStart"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintHorizontal_bias="0.487"
                 app:layout_constraintStart_toStartOf="parent"
@@ -181,10 +197,11 @@
 
             <TextView
                 android:id="@+id/emailLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:textAlignment="textStart"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintHorizontal_bias="0.543"
                 app:layout_constraintStart_toStartOf="parent"
@@ -193,10 +210,11 @@
 
             <TextView
                 android:id="@+id/websiteLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:textAlignment="textStart"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintHorizontal_bias="0.266"
                 app:layout_constraintStart_toStartOf="parent"

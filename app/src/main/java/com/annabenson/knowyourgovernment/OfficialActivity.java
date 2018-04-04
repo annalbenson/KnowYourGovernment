@@ -28,8 +28,8 @@ public class OfficialActivity extends AppCompatActivity {
     //SET PARENT ACTIVITY IN THE MANIFEST
 
     public static final String TAG  = "OfficialActivity";
-    public static final String NO_DATA = "No Data Provided";
-    public static final String UNKNOWN = "Unknown";
+    public static final String NO_DATA = "No Data Provided"; // for else
+    public static final String UNKNOWN = "Unknown"; // for party
     public static final String DEM = "Democratic";
     public static final String DEM2 = "Democrat"; // Rahm Emanuel
     public static final String GOP = "Republican";
@@ -98,7 +98,6 @@ public class OfficialActivity extends AppCompatActivity {
         twitterButton.setImageResource(R.drawable.twittericon);
         facebookButton.setImageResource(R.drawable.facebookicon);
 
-
         Intent intent = this.getIntent();
         // get location text and official object from activity's intent
         // set location heading to the header extra
@@ -132,6 +131,7 @@ public class OfficialActivity extends AppCompatActivity {
 
 
         /*Image Loading*/
+        //Log.d(TAG, "onCreate: Image Loading");
         imageView.setImageResource(R.drawable.ic_hourglass_empty_white_24dp);
 
         if ( official.getPhotoUrl().equals(NO_DATA)) {
@@ -205,6 +205,12 @@ public class OfficialActivity extends AppCompatActivity {
         Linkify.addLinks(emailView,Linkify.EMAIL_ADDRESSES);
         Linkify.addLinks(websiteView,Linkify.WEB_URLS);
 
+        /*
+        addressView.setTextColor(Color.WHITE);
+        phoneView.setTextColor(Color.WHITE);
+        emailView.setTextColor(Color.WHITE);
+        websiteView.setTextColor(Color.WHITE);
+        */
     }
 
     private static void hideView(View v){
@@ -213,9 +219,29 @@ public class OfficialActivity extends AppCompatActivity {
 
     public void openPhotoActivity(View v){
         Log.d(TAG, "imageClicked: ");
+        if(official.getPhotoUrl().equals(NO_DATA)){
+            return;
+        }
+        Intent intent = new Intent(OfficialActivity.this, PhotoActivity.class);
+        Log.d(TAG, "openPhotoActivity: putting location" + locationView.getText().toString());
+        intent.putExtra("header", locationView.getText().toString());
+        Log.d(TAG, "openPhotoActivity: putting office" + official.getOffice());
+        intent.putExtra("office", official.getOffice());
+        Log.d(TAG, "openPhotoActivity: putting name" + official.getName());
+        intent.putExtra("name", official.getName());
 
-        Intent intent = new Intent();
+        if(official.getParty().equals(DEM) || official.getParty().equals(DEM2)){
+            Log.d(TAG, "openPhotoActivity: putting color blue");
+            intent.putExtra("color","blue");
+        }
+        if(official.getParty().equals(GOP)){
+            Log.d(TAG, "openPhotoActivity: putting color red");
+            intent.putExtra("color","red");
+        }
+        Log.d(TAG, "openPhotoActivity: putting image url" + official.getPhotoUrl());
+        intent.putExtra("photoUrl", official.getPhotoUrl());
 
+        startActivity(intent);
 
     }
 
