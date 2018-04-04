@@ -238,6 +238,10 @@ public class OfficialActivity extends AppCompatActivity {
             Log.d(TAG, "openPhotoActivity: putting color red");
             intent.putExtra("color","red");
         }
+        if(official.getParty().equals(UNKNOWN)){
+            Log.d(TAG, "openPhotoActivity: putting color black");
+            intent.putExtra("color", "black");
+        }
         Log.d(TAG, "openPhotoActivity: putting image url" + official.getPhotoUrl());
         intent.putExtra("photoUrl", official.getPhotoUrl());
 

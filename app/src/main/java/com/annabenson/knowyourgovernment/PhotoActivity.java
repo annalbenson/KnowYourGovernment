@@ -22,7 +22,9 @@ public class PhotoActivity extends AppCompatActivity {
      */
 
     public static final String TAG = "PhotoActivity";
-    public static final String NO_DATA = "No Data Provided";
+    public static final String NO_DATA = "No Data Provided"; // for else
+    public static final String UNKNOWN = "Unknown"; // for party
+
     public TextView officeView;
     public TextView nameView;
 
@@ -58,6 +60,9 @@ public class PhotoActivity extends AppCompatActivity {
         }
         if (color.equals("blue")) {
             getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkBlue));
+        }
+        if(color.equals("black")){
+            // do nothing, already black
         }
 
         /*Image Loading*/
