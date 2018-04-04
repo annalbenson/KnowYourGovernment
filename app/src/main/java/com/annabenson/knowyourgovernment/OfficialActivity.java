@@ -1,5 +1,6 @@
 package com.annabenson.knowyourgovernment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -77,6 +79,10 @@ public class OfficialActivity extends AppCompatActivity {
         this.phoneLabel = findViewById(R.id.phoneLabel);
         this.emailLabel = findViewById(R.id.emailLabel);
         this.websiteLabel = findViewById(R.id.websiteLabel);
+        addressLabel.setText(("Address:").toString());
+        phoneLabel.setText(("Phone:").toString());
+        emailLabel.setText(("Email:").toString());
+        websiteLabel.setText(("Website:").toString());
         addressLabel.setTextColor(Color.WHITE);
         phoneLabel.setTextColor(Color.WHITE);
         emailLabel.setTextColor(Color.WHITE);
@@ -99,6 +105,12 @@ public class OfficialActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         official = (Official) bundle.getSerializable("official");
         locationView.setText(intent.getStringExtra("header"));
+
+        /*So the heading gets sent back
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("header",intent.getStringExtra("header"));
+        setResult(RESULT_OK,returnIntent);
+        */
 
         // Populate those variables
         if( official.getOffice().equals(NO_DATA)){ hideView(officeView);}
@@ -186,10 +198,12 @@ public class OfficialActivity extends AppCompatActivity {
             hideView(facebookButton);
         }
 
+        /*LINKIFY*/
 
-
-        //LINKIFY, PAGE 8/9
-
+        Linkify.addLinks(addressView,Linkify.MAP_ADDRESSES);
+        Linkify.addLinks(phoneView,Linkify.PHONE_NUMBERS);
+        Linkify.addLinks(emailView,Linkify.EMAIL_ADDRESSES);
+        Linkify.addLinks(websiteView,Linkify.WEB_URLS);
 
     }
 
@@ -197,27 +211,53 @@ public class OfficialActivity extends AppCompatActivity {
         v.setVisibility(View.GONE);
     }
 
-    public void imageClicked(View v){
+    public void openPhotoActivity(View v){
         Log.d(TAG, "imageClicked: ");
 
-        Intent intent;
+        Intent intent = new Intent();
+
 
     }
 
     public void youtubeClicked(View v){
         Log.d(TAG, "youtubeClicked: ");
 
+        String name = official.getYoutube();
+        Intent intent;
+        try {
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setPackage("com.google.android.youtube");
+            intent.setData(Uri.parse("https://www.youtube.com/" + name));
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
 
+                    Uri.parse("https://www.youtube.com/" + name)));
+
+        }
     }
 
     public void googleplusClicked(View v){
         Log.d(TAG, "googleplusClicked: ");
+        String name = official.getGoogleplus();
+        Intent intent;
+        try {
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setClassName("com.google.android.apps.plus",
+                    "com.google.android.apps.plus.phone.UrlGatewayActivity");
+            intent.putExtra("customAppUri", name);
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+
+                    Uri.parse("https://plus.google.com/" + name)));
+        }
     }
 
     public void twitterClicked(View v){
         Log.d(TAG, "twitterClicked: ");
 
-        Intent intent = null;
+        Intent intent;
         String id = official.getTwitter();
         try {
             getPackageManager().getPackageInfo("com.twitter.android",0);
@@ -235,12 +275,18 @@ public class OfficialActivity extends AppCompatActivity {
         String urlToUse;
 
         PackageManager packageManager = getPackageManager();
-        try{
-
-        }catch (Exception e){
-            urlToUse = FACEBOOK_URL;
+        try {
+            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+            if (versionCode >= 3002850) { //newer versions of fb app
+                urlToUse = "fb://facewebmodal/f?href=" + FACEBOOK_URL;
+            } else { //older versions of fb app
+                urlToUse = "fb://page/" + official.getFacebook();
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            urlToUse = FACEBOOK_URL; //normal web url
         }
-
+        Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+        facebookIntent.setData(Uri.parse(urlToUse));
+        startActivity(facebookIntent);
     }
-
 }

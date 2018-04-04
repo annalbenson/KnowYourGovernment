@@ -43,10 +43,10 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="location" />
 
             <TextView
                 android:id="@+id/officeID"
@@ -55,10 +55,10 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationID" />
+                app:layout_constraintTop_toBottomOf="@+id/locationID"
+                tools:text="officeID" />
 
             <TextView
                 android:id="@+id/nameID"
@@ -67,10 +67,10 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/officeID" />
+                app:layout_constraintTop_toBottomOf="@+id/officeID"
+                tools:text="name" />
 
             <TextView
                 android:id="@+id/partyID"
@@ -79,10 +79,10 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameID" />
+                app:layout_constraintTop_toBottomOf="@+id/nameID"
+                tools:text="party" />
 
             <ImageView
                 android:id="@+id/imageID"
@@ -91,7 +91,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:onClick="imageClicked"
+                android:contentDescription="@string/image_of_official"
+                android:onClick="openPhotoActivity"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/partyID"
@@ -160,11 +161,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="Address:"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintHorizontal_bias="0.275"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/addressID" />
+                app:layout_constraintTop_toTopOf="@+id/addressID"
+                tools:text="address" />
 
             <TextView
                 android:id="@+id/phoneLabel"
@@ -172,11 +173,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="Phone:"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintHorizontal_bias="0.487"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/phoneID" />
+                app:layout_constraintTop_toTopOf="@+id/phoneID"
+                tools:text="phone" />
 
             <TextView
                 android:id="@+id/emailLabel"
@@ -184,11 +185,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="Email:"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintHorizontal_bias="0.543"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/emailID" />
+                app:layout_constraintTop_toTopOf="@+id/emailID"
+                tools:text="email" />
 
             <TextView
                 android:id="@+id/websiteLabel"
@@ -196,11 +197,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="Website:"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintHorizontal_bias="0.266"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/websiteID" />
+                app:layout_constraintTop_toTopOf="@+id/websiteID"
+                tools:text="website" />
 
             <ImageView
                 android:id="@+id/youtubeButton"
@@ -209,6 +210,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
+                android:contentDescription="@string/youtube"
                 android:onClick="youtubeClicked"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
                 app:layout_constraintStart_toStartOf="parent"
@@ -222,6 +224,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
+                android:contentDescription="@string/gplus"
                 android:onClick="googleplusClicked"
                 app:layout_constraintEnd_toStartOf="@+id/onehalf"
                 app:layout_constraintStart_toStartOf="@+id/onefourth"
@@ -235,6 +238,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
+                android:contentDescription="@string/twitter"
                 android:onClick="twitterClicked"
                 app:layout_constraintEnd_toStartOf="@+id/threefourths"
                 app:layout_constraintStart_toStartOf="@+id/onehalf"
@@ -248,6 +252,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
+                android:contentDescription="@string/facebook"
                 android:onClick="facebookClicked"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/threefourths"

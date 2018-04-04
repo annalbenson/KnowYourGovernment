@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, View.OnLongClickListener {
 
     private static final String TAG = "MainActivity";
+    //private static final int CLICK_REQUEST_CODE = 10;
     private MainActivity mainActivity = this;
     private RecyclerView recyclerView;
     private List<Official> officialList = new ArrayList<>();
@@ -42,20 +43,12 @@ public class MainActivity extends AppCompatActivity
     private TextView locationText;
     private Locator locator;
 
-
-
-    //private String displayCity = "";
-    //private String displayState = "";
-    //private String displayZip = "";
-
-    // initial comment 3/19
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         getWindow().getDecorView().setBackgroundColor( getResources().getColor( R.color.purple));
-
 
         // set up RV and Adapter (as usual)
         recyclerView = findViewById(R.id.recycler);
@@ -67,67 +60,13 @@ public class MainActivity extends AppCompatActivity
         locationText.setTextColor(getResources().getColor( R.color.white));
         locator = new Locator(this); // calls doLocationWork in this Activity
 
-        //locationText.setText("OK");
-
-        //new AsyncOfficialLoader(mainActivity).execute(displayZip);
-        //setLocationDisplay(displayCity,displayState,displayZip);
-
-        /*
-        for( int i = 0; i < 5; i++){
-            Log.d(TAG, "onCreate: Creating dummy official " + i);
-            //Official o = new Official("Name" + i, "Office" + i, "Party" + i);
-            //officialList.add(o);
-        }
-        */
-
-
-        //Any text data not supplied use "No Data Provided"
-        // Except, party, then the default is "Unknown"
-        /*
-        Official xy = new Official("John Doe", "County Clerk", "Democratic", "1234 Main St", "123-555-4567", "www.nope.com", "jdoe.gmail.com", "photo.com", "gplus", "facebook", "tweet", "yt" );
-        Official xx = new Official("Jane Doe", "Comptroller", "Republican", "No Data Provided", "123-555-4567", "www.nope.com", "jdoe.gmail.com", "photo.com", "gplus", "facebook", "tweet", "yt" );
-        Official unknowns = new Official(
-                "Anna Benson",
-                "Senator",
-                "Unknown",
-                "3015 S Union",
-                "No Data Provided",
-                "www.anna.com",
-                "alb.gmail.com",
-                "photo.com",
-                "gplus.anna",
-                "fbook.anna",
-                "tweet.alb",
-                "No Data Provided"
-        );
-        officialList.add(xy);
-        officialList.add(xx);
-        officialList.add(unknowns);
-
-        officialAdapter.notifyDataSetChanged();
-        */
-
-
-        /// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        //new AsyncOfficialLoader(mainActivity).execute("60616");
-        /// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
     }
 
     @Override
     protected void onResume(){
-
-        //Log.d(TAG, "onResume: display vars: " + displayCity + " " + displayState + " " + displayZip);
-        //setLocatonDisplay(displayCity,displayState,displayZip);
-        //new AsyncOfficialLoader(mainActivity).execute(displayZip);
-
-        /*
-        if(locator != null){
-            locator.shutdown();
-        }
-        */
-
         super.onResume();
+
+
     }
 
     @Override
@@ -138,7 +77,6 @@ public class MainActivity extends AppCompatActivity
 
 
     /* END OF ON_ METHODS */
-
 
     /* START OF RECYCLERVIEW METHODS */
 
@@ -157,20 +95,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
         officialAdapter.notifyDataSetChanged();
-
-        /*
-        officialList.clear();
-        if(offList != null){
-
-            for (int i = 0; i < offList.size(); i++){
-                officialList.add(offList.get(i));
-            }
-            officialAdapter.notifyDataSetChanged();
-        }
-        else{
-            Log.d(TAG, "addOfficials: null offList");
-        }
-        */
 
     }
 
@@ -222,64 +146,10 @@ public class MainActivity extends AppCompatActivity
                 // Get the zip code from the first returned address
                 Address ad = addresses.get(0);
                 //StringBuilder sb = new StringBuilder();
-
                 String zip = ad.getPostalCode();
-
                 // Use that zip code to create & execute the Civic Info Downloader
-
                 new AsyncOfficialLoader(mainActivity).execute(zip);
 
-//                String addressLine = ad.getAddressLine(0);
-  //              String [] addressArray = addressLine.split(",");
-
-                    /*for( String s : addressArray ){Log.d(TAG, "doAddress: s " + s);}*/
-    //            String city = addressArray[1].trim();
-       //         String [] sZip = addressArray[2].trim().split(" ");
-      //        String state = sZip[0];
-
-                // Get the zip
-       //         String zip = sZip[1];
-
-
-
-
-                //
-
-                /*
-                for (Address ad : addresses) {
-                    //Log.d(TAG, "X: doLocation: " + ad);
-
-                    //Log.d(TAG, "doAddress: ZZZ" + ad.getAddressLine(0));
-                    String addressLine = ad.getAddressLine(0);
-                    String [] addressArray = addressLine.split(",");
-
-                    for( String s : addressArray ){Log.d(TAG, "doAddress: s " + s);}
-                    String city = addressArray[1].trim();
-                    String [] sZip = addressArray[2].trim().split(" ");
-                    String state = sZip[0];
-                    String zip = sZip[1];
-                    //String stateZip = (addressArray[2]).trim();
-                    //int idx = stateZip.indexOf(" "); // space in between State and ZIP
-                    //currentZip = stateZip.substring(idx,stateZip.length()).trim();
-                    //Log.d(TAG, "doAddress: currentZip: " + currentZip);
-
-                    Log.d(TAG, "doAddress: setting location display " + city + ", " + state + " " + zip);
-                    setLocationDisplay(city,state,zip);
-
-                    //sb.append(ad.getAddressLine(0));
-                    //sb.append("\nAddress\n\n");
-
-                    for (int i = 0; i < ad.getMaxAddressLineIndex(); i++) {
-                        //Log.d(TAG, "doAddress: AAA");
-                        //Log.d(TAG, "doAddress: QQQ" + ad.getAddressLine(i));
-                        sb.append(ad.getAddressLine(i));
-                    }
-
-                    //sb.append("\t" + ad.getCountryName() + " (" + ad.getCountryCode() + ")\n");
-                }*/
-
-
-                //return sb.toString();
             } catch (IOException e) {
                 Log.d(TAG, "doAddress: " + e.getMessage());
                 Toast.makeText(mainActivity,"Address cannot be acquired from provided latitude/longitude", Toast.LENGTH_SHORT).show();
@@ -319,12 +189,9 @@ public class MainActivity extends AppCompatActivity
         bundle.putSerializable("official", o);
         intent.putExtras(bundle); // Extra"s" because passing a bundle
 
-        //intent.putExtra("city", displayCity);
-        //intent.putExtra("state", displayState);
-        //intent.putExtra("zip", displayZip);
-
         // start the activity
         startActivity(intent);
+
     }
     @Override
     public boolean onLongClick(View v){
@@ -334,6 +201,19 @@ public class MainActivity extends AppCompatActivity
 
         return false;
     }
+
+    /*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CLICK_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                locationText.setText(data.getStringExtra("header"));
+            }
+        }
+    }
+    */
 
     /* END OF CLICK METHODS */
 
@@ -350,15 +230,6 @@ public class MainActivity extends AppCompatActivity
         switch(item.getItemId()){
             case R.id.location:
                 Log.d(TAG, "onOptionsItemSelected: search clicked");
-                /*
-                if(locator.getLocationListener() != null ){
-                    Log.d(TAG, "onOptionsItemSelected: loc listener not null, shutting down");
-                    locator.shutdown();    
-                }
-                else{
-                    Log.d(TAG, "onOptionsItemSelected: null, loc listener already shut down");
-                }
-                */
                 searchDialog();
                 return true;
             case R.id.about:
@@ -411,7 +282,8 @@ public class MainActivity extends AppCompatActivity
         dialog.show();
     }
 
-    /* END OF DIALOGS */
 
+
+    /* END OF DIALOGS */
 
 }
