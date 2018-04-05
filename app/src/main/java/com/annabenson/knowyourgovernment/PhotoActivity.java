@@ -77,7 +77,7 @@ public class PhotoActivity extends AppCompatActivity {
                 Log.d(TAG, "onImageLoadFailed: AAA");
                 picasso.load(changedUrl)
                         .error(R.drawable.brokenimage)
-                        .placeholder(R.drawable.ic_hourglass_empty_white_24dp)
+                        .placeholder(R.drawable.placeholder)
                         .into(imageView);
 
             }
@@ -86,7 +86,7 @@ public class PhotoActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: BBB");
         picasso.load(photoUrl)
                 .error(R.drawable.brokenimage)
-                .placeholder(R.drawable.ic_hourglass_empty_white_24dp)
+                .placeholder(R.drawable.placeholder)
                 .into(imageView);
 
     }

@@ -59,19 +59,21 @@ public class MainActivity extends AppCompatActivity
         locationView = findViewById(R.id.locationID);
         locationView.setTextColor(getResources().getColor( R.color.white));
         locator = new Locator(this); // calls doLocationWork in this Activity
+        locator.shutdown();
 
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-
+        //locator = new Locator(this); // calls doLocationWork in this Activity
+        //locator.shutdown();
 
     }
 
     @Override
     protected void onDestroy() {
-        locator.shutdown();
+        //locator.shutdown();
         super.onDestroy();
     }
 
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity
         //Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
 
         List<Address> addresses = null;
-        for (int times = 0; times < 3; times++) {
+        //for (int times = 0; times < 3; times++) {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
                 Log.d(TAG, "doAddress: Getting address now");
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity
 
             }
             //Toast.makeText(this, "GeoCoder service is slow - please wait", Toast.LENGTH_SHORT).show();
-        }
+        //}
         //Toast.makeText(this, "GeoCoder service timed out - please try again", Toast.LENGTH_LONG).show();
         //return null;
     }

@@ -132,11 +132,11 @@ public class OfficialActivity extends AppCompatActivity {
 
         /*Image Loading*/
         //Log.d(TAG, "onCreate: Image Loading");
-        imageView.setImageResource(R.drawable.ic_hourglass_empty_white_24dp);
+        imageView.setImageResource(R.drawable.placeholder);
 
         if ( official.getPhotoUrl().equals(NO_DATA)) {
             /* imageView.setImage to generic */
-            imageView.setImageResource(R.drawable.ic_portrait_white_24dp);
+            imageView.setImageResource(R.drawable.missingimage);
         }
         else{
             /* download image */
@@ -148,7 +148,7 @@ public class OfficialActivity extends AppCompatActivity {
                     final String changedUrl = photoUrl.replace("http:", "https:");
                     picasso.load(changedUrl)
                             .error(R.drawable.brokenimage)
-                            .placeholder(R.drawable.ic_hourglass_empty_white_24dp)
+                            .placeholder(R.drawable.placeholder)
                             .into(imageView);
 
                 }
@@ -156,7 +156,7 @@ public class OfficialActivity extends AppCompatActivity {
 
             picasso.load(photoUrl)
                     .error(R.drawable.brokenimage)
-                    .placeholder(R.drawable.ic_hourglass_empty_white_24dp)
+                    .placeholder(R.drawable.placeholder)
                     .into(imageView);
         }
 

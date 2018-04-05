@@ -6,4 +6,5 @@
     <string name="twitter">twitter</string>
     <string name="gplus">gplus</string>
     <string name="facebook">facebook</string>
+    <string name="separator">separator</string>
 </resources>
