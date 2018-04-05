@@ -33,7 +33,7 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <android.support.constraint.Guideline
                 android:id="@+id/onefourth"
@@ -50,21 +50,29 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <android.support.constraint.Guideline
-                android:id="@+id/horizontal"
+                android:id="@+id/threefourths"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.75" />
 
+            <android.support.constraint.Guideline
+                android:id="@+id/horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.77" />
+
             <TextView
                 android:id="@+id/officeID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/horizontal"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/onefourth"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="officeID" />
 
@@ -74,10 +82,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/onehalf"
+                app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/officeID"
                 tools:text="name" />
@@ -88,24 +97,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameID"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="@+id/onehalf"
+                app:layout_constraintTop_toBottomOf="@+id/officeID"
                 tools:text="party" />
 
             <ImageView
                 android:id="@+id/imageID"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:contentDescription="@string/image_of_official"
                 android:onClick="openPhotoActivity"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/partyID"
+                app:layout_constraintStart_toStartOf="@+id/onehalf"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/placeholder" />
 
             <TextView
@@ -117,10 +129,9 @@
                 android:layout_marginTop="8dp"
                 android:textAlignment="viewStart"
                 android:textColorLink="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.261"
-                app:layout_constraintStart_toStartOf="@+id/onefourth"
-                app:layout_constraintTop_toBottomOf="@+id/imageID"
+                app:layout_constraintEnd_toStartOf="@+id/onehalf"
+                app:layout_constraintStart_toEndOf="@+id/addressLabel"
+                app:layout_constraintTop_toBottomOf="@+id/nameID"
                 tools:text="address" />
 
             <TextView
@@ -133,9 +144,8 @@
                 android:textAlignment="viewStart"
                 android:textColorLink="@color/white"
                 android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.261"
-                app:layout_constraintStart_toStartOf="@+id/onefourth"
+                app:layout_constraintEnd_toStartOf="@+id/onehalf"
+                app:layout_constraintStart_toEndOf="@+id/phoneLabel"
                 app:layout_constraintTop_toBottomOf="@+id/addressID"
                 tools:text="phone" />
 
@@ -148,9 +158,8 @@
                 android:layout_marginTop="12dp"
                 android:textAlignment="viewStart"
                 android:textColorLink="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.261"
-                app:layout_constraintStart_toStartOf="@+id/onefourth"
+                app:layout_constraintEnd_toStartOf="@+id/onehalf"
+                app:layout_constraintStart_toEndOf="@+id/emailLabel"
                 app:layout_constraintTop_toBottomOf="@+id/phoneID"
                 tools:text="email" />
 
@@ -163,9 +172,8 @@
                 android:layout_marginTop="8dp"
                 android:textAlignment="viewStart"
                 android:textColorLink="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.261"
-                app:layout_constraintStart_toStartOf="@+id/onefourth"
+                app:layout_constraintEnd_toStartOf="@+id/onehalf"
+                app:layout_constraintStart_toEndOf="@+id/websiteLabel"
                 app:layout_constraintTop_toBottomOf="@+id/emailID"
                 tools:text="website" />
 
@@ -173,11 +181,8 @@
                 android:id="@+id/addressLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:textAlignment="textStart"
-                app:layout_constraintEnd_toStartOf="@+id/onefourth"
-                app:layout_constraintHorizontal_bias="0.275"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/addressID"
                 tools:text="address" />
@@ -186,11 +191,8 @@
                 android:id="@+id/phoneLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:textAlignment="textStart"
-                app:layout_constraintEnd_toStartOf="@+id/onefourth"
-                app:layout_constraintHorizontal_bias="0.487"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/phoneID"
                 tools:text="phone" />
@@ -199,11 +201,8 @@
                 android:id="@+id/emailLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:textAlignment="textStart"
-                app:layout_constraintEnd_toStartOf="@+id/onefourth"
-                app:layout_constraintHorizontal_bias="0.543"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/emailID"
                 tools:text="email" />
@@ -212,11 +211,8 @@
                 android:id="@+id/websiteLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:textAlignment="textStart"
-                app:layout_constraintEnd_toStartOf="@+id/onefourth"
-                app:layout_constraintHorizontal_bias="0.266"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/websiteID"
                 tools:text="website" />
@@ -227,12 +223,14 @@
                 android:layout_height="45dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:contentDescription="@string/youtube"
                 android:onClick="youtubeClicked"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/onefourth"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/websiteID"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal"
                 app:srcCompat="@drawable/ic_launcher_background" />
 
             <ImageView
@@ -241,40 +239,41 @@
                 android:layout_height="45dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
                 android:contentDescription="@string/gplus"
                 android:onClick="googleplusClicked"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/onehalf"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/onefourth"
                 app:layout_constraintStart_toStartOf="@+id/onefourth"
-                app:layout_constraintTop_toBottomOf="@+id/websiteID"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal"
                 app:srcCompat="@drawable/ic_launcher_background" />
 
             <ImageView
                 android:id="@+id/twitterButton"
                 android:layout_width="45dp"
                 android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
                 android:contentDescription="@string/twitter"
                 android:onClick="twitterClicked"
-                app:layout_constraintEnd_toStartOf="@+id/horizontal"
-                app:layout_constraintStart_toStartOf="@+id/onehalf"
-                app:layout_constraintTop_toBottomOf="@+id/websiteID"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/threefourths"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/onehalf"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal"
                 app:srcCompat="@drawable/ic_launcher_background" />
 
             <ImageView
                 android:id="@+id/facebookButton"
                 android:layout_width="45dp"
                 android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginEnd="48dp"
                 android:contentDescription="@string/facebook"
                 android:onClick="facebookClicked"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/websiteID"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/threefourths"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal"
                 app:srcCompat="@drawable/ic_launcher_background" />
 
         </android.support.constraint.ConstraintLayout>

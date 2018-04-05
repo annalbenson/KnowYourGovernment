@@ -1,13 +1,17 @@
 package com.annabenson.knowyourgovernment;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -129,37 +133,41 @@ public class OfficialActivity extends AppCompatActivity {
             }
         }
 
+        if(connected()) {
+
 
         /*Image Loading*/
-        //Log.d(TAG, "onCreate: Image Loading");
-        imageView.setImageResource(R.drawable.placeholder);
+            //Log.d(TAG, "onCreate: Image Loading");
+            imageView.setImageResource(R.drawable.placeholder);
 
-        if ( official.getPhotoUrl().equals(NO_DATA)) {
+            if (official.getPhotoUrl().equals(NO_DATA)) {
             /* imageView.setImage to generic */
-            imageView.setImageResource(R.drawable.missingimage);
-        }
-        else{
+                imageView.setImageResource(R.drawable.missingimage);
+            } else {
             /* download image */
-            final String photoUrl = official.getPhotoUrl();
-            Picasso picasso = new Picasso.Builder(this).listener(new Picasso.Listener() {
-                @Override
-                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                // Here we try https if the http image attempt failed
-                    final String changedUrl = photoUrl.replace("http:", "https:");
-                    picasso.load(changedUrl)
-                            .error(R.drawable.brokenimage)
-                            .placeholder(R.drawable.placeholder)
-                            .into(imageView);
+                final String photoUrl = official.getPhotoUrl();
+                Picasso picasso = new Picasso.Builder(this).listener(new Picasso.Listener() {
+                    @Override
+                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                        // Here we try https if the http image attempt failed
+                        final String changedUrl = photoUrl.replace("http:", "https:");
+                        picasso.load(changedUrl)
+                                .error(R.drawable.brokenimage)
+                                .placeholder(R.drawable.placeholder)
+                                .into(imageView);
 
-                }
-            }).build();
+                    }
+                }).build();
 
-            picasso.load(photoUrl)
-                    .error(R.drawable.brokenimage)
-                    .placeholder(R.drawable.placeholder)
-                    .into(imageView);
+                picasso.load(photoUrl)
+                        .error(R.drawable.brokenimage)
+                        .placeholder(R.drawable.placeholder)
+                        .into(imageView);
+            }
+
+        } else {
+            imageView.setImageResource(R.drawable.placeholder);
         }
-
         // pdf 2/16 has Email: No Data Provided if that's the case
 
         addressView.setText(official.getAddress()); addressView.setTextColor(Color.WHITE);
@@ -319,4 +327,14 @@ public class OfficialActivity extends AppCompatActivity {
         facebookIntent.setData(Uri.parse(urlToUse));
         startActivity(facebookIntent);
     }
+
+
+    private boolean connected(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+
+
 }

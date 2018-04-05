@@ -1,12 +1,15 @@
 package com.annabenson.knowyourgovernment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,14 +60,22 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         locationView = findViewById(R.id.locationID);
-        locationView.setTextColor(getResources().getColor( R.color.white));
-        locator = new Locator(this); // calls doLocationWork in this Activity
-        locator.shutdown();
+        locationView.setTextColor(getResources().getColor(R.color.white));
+
+        if(connected()) {
+            locator = new Locator(this); // calls doLocationWork in this Activity
+            locator.shutdown();
+        } else{
+            locationView.setText("No Data For Location");
+            noNetDialog();
+        }
+
 
     }
 
     @Override
     protected void onResume(){
+
         super.onResume();
         //locator = new Locator(this); // calls doLocationWork in this Activity
         //locator.shutdown();
@@ -135,7 +146,7 @@ public class MainActivity extends AppCompatActivity
 
     public void doLocationWork(double latitude, double longitude) {
 
-        //Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
+        Log.d(TAG, "doAddress: Lat: " + latitude + ", Lon: " + longitude);
 
         List<Address> addresses = null;
         //for (int times = 0; times < 3; times++) {
@@ -232,7 +243,12 @@ public class MainActivity extends AppCompatActivity
         switch(item.getItemId()){
             case R.id.location:
                 Log.d(TAG, "onOptionsItemSelected: search clicked");
-                searchDialog();
+                if(connected()){
+                    searchDialog();
+                }
+                else{
+                    noNetDialog();
+                }
                 return true;
             case R.id.about:
                 Intent intent = new Intent(MainActivity.this, AboutActivity.class);
@@ -279,8 +295,20 @@ public class MainActivity extends AppCompatActivity
         dialog.show();
     }
 
-
+    public void noNetDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Data cannot be accessed/loaded without an internet connection.");
+        builder.setTitle("No Network Connection");
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
     /* END OF DIALOGS */
+
+    private boolean connected(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 }

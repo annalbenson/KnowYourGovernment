@@ -1,7 +1,10 @@
 package com.annabenson.knowyourgovernment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -65,30 +68,43 @@ public class PhotoActivity extends AppCompatActivity {
             // do nothing, already black
         }
 
+        if(connected()) {
+
+
         /*Image Loading*/
-        Log.d(TAG, "onCreate: Image Loading");
-        final String photoUrl = intent.getStringExtra("photoUrl");
-        Log.d(TAG, "onCreate: photo url is " + photoUrl);
-        Picasso picasso = new Picasso.Builder(this).listener(new Picasso.Listener() {
-            @Override
-            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                // Here we try https if the http image attempt failed
-                final String changedUrl = photoUrl.replace("http:", "https:");
-                Log.d(TAG, "onImageLoadFailed: AAA");
-                picasso.load(changedUrl)
-                        .error(R.drawable.brokenimage)
-                        .placeholder(R.drawable.placeholder)
-                        .into(imageView);
+            Log.d(TAG, "onCreate: Image Loading");
+            final String photoUrl = intent.getStringExtra("photoUrl");
+            Log.d(TAG, "onCreate: photo url is " + photoUrl);
+            Picasso picasso = new Picasso.Builder(this).listener(new Picasso.Listener() {
+                @Override
+                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                    // Here we try https if the http image attempt failed
+                    final String changedUrl = photoUrl.replace("http:", "https:");
+                    Log.d(TAG, "onImageLoadFailed: AAA");
+                    picasso.load(changedUrl)
+                            .error(R.drawable.brokenimage)
+                            .placeholder(R.drawable.placeholder)
+                            .into(imageView);
 
-            }
-        }).build();
+                }
+            }).build();
 
-        Log.d(TAG, "onCreate: BBB");
-        picasso.load(photoUrl)
-                .error(R.drawable.brokenimage)
-                .placeholder(R.drawable.placeholder)
-                .into(imageView);
+            Log.d(TAG, "onCreate: BBB");
+            picasso.load(photoUrl)
+                    .error(R.drawable.brokenimage)
+                    .placeholder(R.drawable.placeholder)
+                    .into(imageView);
+        } else{
+            imageView.setImageResource(R.drawable.placeholder);
+        }
 
+    }
+
+
+    private boolean connected(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 }
