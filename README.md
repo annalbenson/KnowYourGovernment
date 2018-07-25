@@ -13,10 +13,12 @@
 
 <b>Usage</b>
 
-Upon app installation and initial launch your device will use location services to get a zipcode:
+Upon app installation and initial launch your device will use location services to get a zipcode and asynchronously download official information from the Google Civic API. This information is then loaded into a list which is displayed in the main activity.
 
-<div style="display: flex; justify-content: center;">
-  <img src="https://github.com/annalbenson/KnowYourGovernment/blob/master/screenshots/initial_launch.png" align="left" height="500" >
-</div>
+
+<p align="center">
+  <img src="https://github.com/annalbenson/KnowYourGovernment/blob/master/screenshots/initial_launch.png" height="550" >
+</p>
 
 Clicking on a list item opens a new activity with additional elected official information
+
