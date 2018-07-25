@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
             officialList.clear();
             ArrayList<Official> offList = (ArrayList<Official>) results[1];
             for(int i = 0; i < offList.size(); i++){
-                officialList.add( (Official) offList.get(i));
+                officialList.add( offList.get(i));
             }
         }
         officialAdapter.notifyDataSetChanged();
