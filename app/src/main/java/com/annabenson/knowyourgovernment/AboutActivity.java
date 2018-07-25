@@ -28,7 +28,7 @@ public class AboutActivity extends AppCompatActivity {
         versionView = findViewById(R.id.versionID);
 
         titleView.setText("Know Your Government");
-        copyrightView.setText("© 2018, Anna Benson");
+        copyrightView.setText("© 2018, Anna L. Benson");
         versionView.setText("Version 1.0");
     }
 }

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -25,7 +26,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity
 
     private TextView locationView;
     private Locator locator;
+
+    //private List<Official> savedData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,22 +75,76 @@ public class MainActivity extends AppCompatActivity
             noNetDialog();
         }
 
-
     }
+
 
     @Override
     protected void onResume(){
 
-        super.onResume();
-        //locator = new Locator(this); // calls doLocationWork in this Activity
-        //locator.shutdown();
+        // load data from file
+        Object[] saved = loadData();
+        setOfficialList(saved);
 
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        //nD.setNote( noteBody.getText().toString());
+        // CALL SUPER
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        //saveNote();
+        // CALL SUPER
+        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         //locator.shutdown();
         super.onDestroy();
+    }
+
+    private void saveData(){
+        Log.d(TAG, "saveData: ");
+
+        try {
+            FileOutputStream fos = getApplicationContext().openFileOutput(getString(R.string.file_name), Context.MODE_PRIVATE);
+
+            JsonWriter writer = new JsonWriter(new OutputStreamWriter(fos, getString(R.string.encoding)));
+            writer.setIndent(("  "));
+
+            // save normalized input header
+            writer.beginObject();
+            writer.name("header").value(locationView.getText().toString());
+            writer.endObject();
+
+            // save list items
+            writer.beginArray(); // array of officials
+            for(int i = 0; i < officialList.size(); i++){
+
+            }
+
+            writer.beginObject();
+
+        } catch (Exception e){
+            e.getStackTrace();
+        }
+    }
+
+
+    private Object[] loadData(){
+        Log.d(TAG, "loadFile: Reloading list data upon rotate");
+
+        try{
+
+        }
+
+
     }
 
 
