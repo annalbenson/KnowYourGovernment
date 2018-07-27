@@ -120,16 +120,20 @@ public class MainActivity extends AppCompatActivity
 
             // save normalized input header
             writer.beginObject();
-            writer.name("header").value(locationView.getText().toString());
+            writer.name("norminput").value(locationView.getText().toString());
             writer.endObject();
 
             // save list items
             writer.beginArray(); // array of officials
             for(int i = 0; i < officialList.size(); i++){
-
+                writer.beginObject();
+                writer.endObject();
             }
 
-            writer.beginObject();
+            writer.endArray();
+            
+            writer.close();
+            Log.d(TAG, "saveData: saved");
 
         } catch (Exception e){
             e.getStackTrace();
