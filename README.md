@@ -1,8 +1,8 @@
 # KnowYourGovernment
 
 <b>Description</b>
-- Android App that uses location services to download local, state, and nation elected official contact information for current zipcode
-- Uses Google Civic Information API (https://developers.google.com/civic-information/)
+- Android App that uses location services to download local, state, and nation elected official contact information for current location or a user entered location.
+- Uses Google Civic Information API (https://developers.google.com/civic-information/).
 
 <b>Installation</b>
 - USB Cable
@@ -12,7 +12,7 @@
 <b>Usage</b>
 
 <div class="row">
-    <p>Upon app installation and initial launch your device will use location services to get a zipcode and asynchronously download official information from the Google Civic API. This information is then loaded into a list which is displayed in the main activity.
+    <p>Upon app installation and initial launch your device/emulator will use location services to get your current zipcode and asynchronously download official information from the Google Civic API. This information is then loaded into a list which is displayed in the main activity.
     </p>
     <p align="center" >
       <img src="https://github.com/annalbenson/KnowYourGovernment/blob/master/screenshots/initial_launch.png" height="400" >
@@ -47,7 +47,7 @@
 </div>
 
 <div class="row">
-    <p>To search for official information for somewhere else in the USA, click the search icon in the top left.</p>
+    <p>To search for official information for somewhere else click the search icon in the top left.</p>
     <p align="center" >
       <img src="https://github.com/annalbenson/KnowYourGovernment/blob/master/screenshots/initial_launch.png" height="400" >
       <img src="https://github.com/annalbenson/KnowYourGovernment/blob/master/screenshots/search_dialog.png" height="400" >
