@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity
     protected void onResume(){
 
         // load data from file
-        Object[] saved = loadData();
-        setOfficialList(saved);
+        //Object[] saved = loadData();
+        //setOfficialList(saved);
 
         super.onResume();
 
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
+/*
     private Object[] loadData(){
         Log.d(TAG, "loadFile: Reloading list data upon rotate");
 
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-
+*/
 
     /* END OF ON_ METHODS */
 
