@@ -1,8 +1,8 @@
 # KnowYourGovernment
 
 <b>Description</b>
-- Android App that uses location services to download local, state, and nation elected official contact information for current location or a user entered location.
-- Uses Google Civic Information API (https://developers.google.com/civic-information/).
+
+Uses location services and the Google Civic Information API (https://developers.google.com/civic-information/) to download and display contact information for local, state, and national elected officials based on the device's current location or a user entered location.
 
 <b>Installation</b>
 - USB Cable
