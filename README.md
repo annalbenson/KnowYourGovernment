@@ -2,7 +2,7 @@
 
 <b>Description</b>
 
-Uses location services and the Google Civic Information API (https://developers.google.com/civic-information/) to download and display contact information for local, state, and national elected officials based on the device's current location or a user entered location.
+Android App that uses location services and the Google Civic Information API (https://developers.google.com/civic-information/) to download and display contact information for local, state, and national elected officials based on the device's current location or a user entered location.
 
 <b>Installation</b>
 - USB Cable
